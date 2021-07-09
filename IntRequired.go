@@ -1,4 +1,4 @@
-package JSONHelper
+package go_json_mcparsey
 
 import "strconv"
 
@@ -14,6 +14,10 @@ func IntRequired(origin map[string]interface{}, key string, requiredFields *[]st
 			return ProductId, true
 		case int:
 			return tempProductId, true
+		case int32:
+			return int(tempProductId), true
+		case int64:
+			return int(tempProductId), true
 		case float64:
 			return int(tempProductId), true
 		default:

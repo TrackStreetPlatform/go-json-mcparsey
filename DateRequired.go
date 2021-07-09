@@ -1,4 +1,4 @@
-package JSONHelper
+package go_json_mcparsey
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"

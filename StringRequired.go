@@ -1,4 +1,4 @@
-package JSONHelper
+package go_json_mcparsey
 
 func StringRequired(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue string) (value string, isValid bool) {
 	if maybeValueInField, ok := origin[key]; ok {

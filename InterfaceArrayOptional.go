@@ -1,4 +1,4 @@
-package JSONHelper
+package go_json_mcparsey
 
 func InterfaceArrayOptional(origin map[string]interface{}, key string) []map[string]interface{} {
 	items := make([]map[string]interface{}, 0)

@@ -1,4 +1,4 @@
-package JSONHelper
+package go_json_mcparsey
 
 func InterfaceArrayRequired(origin map[string]interface{}, key string, requiredFields *[]string) (value []map[string]interface{}, isValid bool) {
 	items := make([]map[string]interface{}, 0)

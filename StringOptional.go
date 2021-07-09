@@ -1,4 +1,4 @@
-package JSONHelper
+package go_json_mcparsey
 
 func StringOptional(origin map[string]interface{}, key string, defaultValue string) string {
 	if maybeValueInField, ok := origin[key]; ok {
