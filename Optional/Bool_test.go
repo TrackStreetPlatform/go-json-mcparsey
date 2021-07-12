@@ -102,7 +102,7 @@ func TestBool(t *testing.T) {
 			got := Bool(tt.input.Origin, tt.input.Key, tt.input.DefaultValue)
 			if got != tt.output {
 				t.Errorf(
-					"expected ArrayString(%v,%v,%v) = %v; got %v",
+					"expected Bool(%v,%v,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,
