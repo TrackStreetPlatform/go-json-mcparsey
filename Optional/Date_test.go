@@ -31,7 +31,7 @@ func TestDate(t *testing.T) {
 			output: time.Time{},
 		},
 		{
-			name: "TimeInString",
+			name: "CaseString",
 			input: struct {
 				Origin       map[string]interface{}
 				Key          string
@@ -43,7 +43,7 @@ func TestDate(t *testing.T) {
 			output: testTime,
 		},
 		{
-			name: "TimeInStringError",
+			name: "CaseStringLayoutError",
 			input: struct {
 				Origin       map[string]interface{}
 				Key          string
@@ -55,7 +55,7 @@ func TestDate(t *testing.T) {
 			output: time.Time{},
 		},
 		{
-			name: "TimeInTime",
+			name: "CaseTime",
 			input: struct {
 				Origin       map[string]interface{}
 				Key          string
