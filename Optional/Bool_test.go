@@ -25,7 +25,7 @@ func TestBool(t *testing.T) {
 			output: false,
 		},
 		{
-			name: "StringValueTrue",
+			name: "CaseStringTrue",
 			input: struct {
 				Origin       map[string]interface{}
 				Key          string
@@ -37,7 +37,7 @@ func TestBool(t *testing.T) {
 			output: true,
 		},
 		{
-			name: "StringValue1",
+			name: "CaseString1",
 			input: struct {
 				Origin       map[string]interface{}
 				Key          string
@@ -49,7 +49,7 @@ func TestBool(t *testing.T) {
 			output: true,
 		},
 		{
-			name: "IntegerValue",
+			name: "CaseInteger",
 			input: struct {
 				Origin       map[string]interface{}
 				Key          string
@@ -61,7 +61,7 @@ func TestBool(t *testing.T) {
 			output: true,
 		},
 		{
-			name: "FloatValue",
+			name: "CaseFloat",
 			input: struct {
 				Origin       map[string]interface{}
 				Key          string
@@ -73,19 +73,7 @@ func TestBool(t *testing.T) {
 			output: true,
 		},
 		{
-			name: "ListValue",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue bool
-			}{
-				Origin: map[string]interface{}{
-					"value": []string{},
-				}, Key: "value", DefaultValue: false},
-			output: false,
-		},
-		{
-			name: "BoolValue",
+			name: "CaseBool",
 			input: struct {
 				Origin       map[string]interface{}
 				Key          string
@@ -95,6 +83,18 @@ func TestBool(t *testing.T) {
 					"value": true,
 				}, Key: "value", DefaultValue: false},
 			output: true,
+		},
+		{
+			name: "UnsupportedType",
+			input: struct {
+				Origin       map[string]interface{}
+				Key          string
+				DefaultValue bool
+			}{
+				Origin: map[string]interface{}{
+					"value": []string{},
+				}, Key: "value", DefaultValue: false},
+			output: false,
 		},
 	}
 	for _, tt := range tests {
