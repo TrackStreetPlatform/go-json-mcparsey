@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestDispatchPluginsFromQueue(t *testing.T) {
+func TestArrayString(t *testing.T) {
 	tests := []struct {
 		name  string
 		input struct {
