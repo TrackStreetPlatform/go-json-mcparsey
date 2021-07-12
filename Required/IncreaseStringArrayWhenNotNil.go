@@ -1,4 +1,4 @@
-package go_json_mcparsey
+package Required
 
 func AppendWhenNotNil(requiredFields *[]string, key string) {
 	if requiredFields != nil {

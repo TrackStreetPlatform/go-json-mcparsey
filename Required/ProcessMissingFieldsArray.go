@@ -1,4 +1,4 @@
-package go_json_mcparsey
+package Required
 
 import (
 	"errors"
@@ -6,9 +6,9 @@ import (
 	"strings"
 )
 
-func ProcessRequiredFieldsArray(requiredFields []string, strType string) error {
-	if len(requiredFields) > 0 {
-		fields := strings.Join(requiredFields, ", ")
+func ProcessMissingFieldsArray(missingRequiredFields []string, strType string) error {
+	if len(missingRequiredFields) > 0 {
+		fields := strings.Join(missingRequiredFields, ", ")
 		errorMsg := fmt.Sprintf("%s %s ", "required fields in json not avaiable in the correct type for ", strType, ": ", fields)
 		return errors.New(errorMsg)
 	}

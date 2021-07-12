@@ -1,8 +1,8 @@
-package go_json_mcparsey
+package Required
 
 import "strings"
 
-func ArrayStringRequired(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue []string) (value []string, isValid bool) {
+func ArrayString(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue []string) (value []string, isValid bool) {
 	if maybeValueInField, ok := origin[key]; ok {
 		switch tempValueInField := maybeValueInField.(type) {
 		case string:

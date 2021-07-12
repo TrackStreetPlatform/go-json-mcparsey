@@ -1,8 +1,8 @@
-package go_json_mcparsey
+package Optional
 
 import "strconv"
 
-func Float64Optional(origin map[string]interface{}, key string, defaultValue float64) float64 {
+func Float64(origin map[string]interface{}, key string, defaultValue float64) float64 {
 	if maybePrice, ok := origin[key]; ok {
 		switch tempPrice := maybePrice.(type) {
 		case string:

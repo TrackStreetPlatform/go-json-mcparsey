@@ -1,11 +1,11 @@
-package go_json_mcparsey
+package Required
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 )
 
-func DateRequired(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue time.Time) (value time.Time, isValid bool) {
+func Date(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue time.Time) (value time.Time, isValid bool) {
 	var err error
 	if maybeForce, ok := origin[key]; ok {
 		switch tempForce := maybeForce.(type) {

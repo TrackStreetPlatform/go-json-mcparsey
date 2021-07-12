@@ -1,8 +1,8 @@
-package go_json_mcparsey
+package Optional
 
 import "strconv"
 
-func BoolOptional(origin map[string]interface{}, key string, defaultValue bool) bool {
+func Bool(origin map[string]interface{}, key string, defaultValue bool) bool {
 	if maybeForce, ok := origin[key]; ok {
 		switch tempForce := maybeForce.(type) {
 		case string:

@@ -1,8 +1,8 @@
-package go_json_mcparsey
+package Optional
 
 import "strconv"
 
-func IntOptional(origin map[string]interface{}, key string, defaultValue int) int {
+func Int(origin map[string]interface{}, key string, defaultValue int) int {
 	if maybeProductId, ok := origin[key]; ok {
 		switch tempProductId := maybeProductId.(type) {
 		case string:

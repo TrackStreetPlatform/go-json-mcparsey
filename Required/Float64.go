@@ -1,8 +1,8 @@
-package go_json_mcparsey
+package Required
 
 import "strconv"
 
-func Float64Required(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue float64) (value float64, isValid bool) {
+func Float64(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue float64) (value float64, isValid bool) {
 	if maybePrice, ok := origin[key]; ok {
 		switch tempPrice := maybePrice.(type) {
 		case string:

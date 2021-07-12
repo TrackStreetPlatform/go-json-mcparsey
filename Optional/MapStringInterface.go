@@ -1,6 +1,6 @@
-package go_json_mcparsey
+package Optional
 
-func MapStringInterfaceOptional(origin map[string]interface{}, key string, defaultValue map[string]interface{}) map[string]interface{} {
+func MapStringInterface(origin map[string]interface{}, key string, defaultValue map[string]interface{}) map[string]interface{} {
 	if maybeValueInField, ok := origin[key]; ok {
 		switch tempValueInField := maybeValueInField.(type) {
 		case map[string]interface{}:

@@ -1,4 +1,4 @@
-package go_json_mcparsey
+package Required
 
 import (
 	"github.com/google/uuid"
@@ -6,7 +6,7 @@ import (
 	uuid2 "go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 )
 
-func UUIDRequired(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue uuid.UUID) (value uuid.UUID, isValid bool) {
+func UUID(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue uuid.UUID) (value uuid.UUID, isValid bool) {
 	if maybeValueInField, ok := origin[key]; ok {
 		switch tempValueInField := maybeValueInField.(type) {
 		case string:

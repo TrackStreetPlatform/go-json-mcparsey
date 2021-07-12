@@ -1,6 +1,6 @@
-package go_json_mcparsey
+package Optional
 
-func StringOptional(origin map[string]interface{}, key string, defaultValue string) string {
+func String(origin map[string]interface{}, key string, defaultValue string) string {
 	if maybeValueInField, ok := origin[key]; ok {
 		switch tempValueInField := maybeValueInField.(type) {
 		case string:

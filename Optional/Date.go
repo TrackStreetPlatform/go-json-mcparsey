@@ -1,10 +1,10 @@
-package go_json_mcparsey
+package Optional
 
 import (
 	"time"
 )
 
-func DateOptional(origin map[string]interface{}, key string, defaultValue time.Time) time.Time {
+func Date(origin map[string]interface{}, key string, defaultValue time.Time) time.Time {
 	var err error
 	var value time.Time
 	if maybeForce, ok := origin[key]; ok {

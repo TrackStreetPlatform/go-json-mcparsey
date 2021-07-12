@@ -1,7 +1,8 @@
-package go_json_mcparsey
+package Required
 
-func InterfaceArrayOptional(origin map[string]interface{}, key string) []map[string]interface{} {
+func InterfaceArray(origin map[string]interface{}, key string, requiredFields *[]string) (value []map[string]interface{}, isValid bool) {
 	items := make([]map[string]interface{}, 0)
+	isValid = false
 	if maybeValueInField, ok := origin[key]; ok {
 		switch tempValueInField := maybeValueInField.(type) {
 		case []interface{}:
@@ -9,14 +10,16 @@ func InterfaceArrayOptional(origin map[string]interface{}, key string) []map[str
 				switch tempValueInField := maybeItem.(type) {
 				case map[string]interface{}:
 					items = append(items, tempValueInField)
+					isValid = true
 				default:
 					break
 				}
-
 			}
 		default:
-			break
+			AppendWhenNotNil(requiredFields, key)
 		}
+	} else {
+		AppendWhenNotNil(requiredFields, key)
 	}
-	return items
+	return items, isValid
 }

@@ -1,9 +1,9 @@
-package go_json_mcparsey
+package Required
 
-func MapStringInterfaceRequired(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue map[string]interface{}) (value map[string]interface{}, isValid bool) {
+func String(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue string) (value string, isValid bool) {
 	if maybeValueInField, ok := origin[key]; ok {
 		switch tempValueInField := maybeValueInField.(type) {
-		case map[string]interface{}:
+		case string:
 			return tempValueInField, true
 		default:
 			AppendWhenNotNil(requiredFields, key)

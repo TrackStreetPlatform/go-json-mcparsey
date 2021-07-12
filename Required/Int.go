@@ -1,8 +1,8 @@
-package go_json_mcparsey
+package Required
 
 import "strconv"
 
-func IntRequired(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue int) (value int, isValid bool) {
+func Int(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue int) (value int, isValid bool) {
 	if maybeProductId, ok := origin[key]; ok {
 		switch tempProductId := maybeProductId.(type) {
 		case string:
