@@ -24,7 +24,7 @@ func TestArrayString(t *testing.T) {
 				DefaultValue []string
 			}{
 				Origin: map[string]interface{}{
-					"proxies": "1,2,3,TOR,luminati",
+					"value": "1",
 				}, Key: "NonExisting", DefaultValue: []string{}},
 			output: []string{},
 		},
@@ -36,9 +36,9 @@ func TestArrayString(t *testing.T) {
 				DefaultValue []string
 			}{
 				Origin: map[string]interface{}{
-					"proxies": "1,2,3,TOR,luminati",
-				}, Key: "proxies", DefaultValue: []string{}},
-			output: []string{"1", "2", "3", "TOR", "luminati"},
+					"value": "1,2",
+				}, Key: "value", DefaultValue: []string{}},
+			output: []string{"1", "2"},
 		},
 		{
 			name: "UnsupportedType",
@@ -48,8 +48,8 @@ func TestArrayString(t *testing.T) {
 				DefaultValue []string
 			}{
 				Origin: map[string]interface{}{
-					"proxies": 3443,
-				}, Key: "proxies", DefaultValue: []string{}},
+					"value": 42,
+				}, Key: "value", DefaultValue: []string{}},
 			output: []string{},
 		},
 	}

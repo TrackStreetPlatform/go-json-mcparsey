@@ -20,7 +20,7 @@ func TestString(t *testing.T) {
 				DefaultValue string
 			}{
 				Origin: map[string]interface{}{
-					"value": "forty two",
+					"value": "42",
 				}, Key: "NonExisting", DefaultValue: ""},
 			output: "",
 		},

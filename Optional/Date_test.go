@@ -6,9 +6,8 @@ import (
 )
 
 func TestDate(t *testing.T) {
-	layout := "2006-01-02T15:04:05Z"
-	str := "2014-11-12T11:45:26Z"
-	testTime, _ := time.Parse(layout, str)
+	strTime := "1997-03-01T18:45:26Z"
+	testTime, _ := time.Parse("2006-01-02T15:04:05Z", strTime)
 	tests := []struct {
 		name  string
 		input struct {
@@ -38,7 +37,7 @@ func TestDate(t *testing.T) {
 				DefaultValue time.Time
 			}{
 				Origin: map[string]interface{}{
-					"value": "2014-11-12T11:45:26Z",
+					"value": strTime,
 				}, Key: "value", DefaultValue: time.Time{}},
 			output: testTime,
 		},

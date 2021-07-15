@@ -22,9 +22,9 @@ func TestFloat64(t *testing.T) {
 				DefaultValue float64
 			}{
 				Origin: map[string]interface{}{
-					"value": 42.0,
-				}, Key: "NonExisting", DefaultValue: 0.0},
-			output: 0.0,
+					"value": 42.,
+				}, Key: "NonExisting", DefaultValue: 0.},
+			output: 0.,
 		},
 		{
 			name: "CaseInt",

@@ -13,7 +13,6 @@ func TestInterfaceArray(t *testing.T) {
 			Key    string
 		}
 		output []map[string]interface{}
-		//[]map[string]interface{}{{"proxies": "1,2,3"}, {"attributes": "Cache"}}
 	}{
 		{
 			name: "NonExistingKey",
@@ -22,9 +21,9 @@ func TestInterfaceArray(t *testing.T) {
 				Key    string
 			}{
 				Origin: map[string]interface{}{
-					"value": 42,
+					"value": []interface{}{map[string]interface{}{"test": 42}},
 				}, Key: "NonExisting"},
-			output: make([]map[string]interface{}, 0),
+			output: []map[string]interface{}{},
 		},
 		{
 			name: "CommonCase",
@@ -33,9 +32,22 @@ func TestInterfaceArray(t *testing.T) {
 				Key    string
 			}{
 				Origin: map[string]interface{}{
-					"value": []interface{}{"testing1", "testing2"},
+					"value": []interface{}{map[string]interface{}{"test": 42}},
 				}, Key: "value"},
-			output: []map[string]interface{}{},
+			output: []map[string]interface{}{{"test": 42}},
+		},
+		{
+			name: "CommonCaseMultipleEntries",
+			input: struct {
+				Origin map[string]interface{}
+				Key    string
+			}{
+				Origin: map[string]interface{}{
+					"value": []interface{}{
+						map[string]interface{}{"test1": 42},
+						map[string]interface{}{"test2": "42"}},
+				}, Key: "value"},
+			output: []map[string]interface{}{{"test1": 42}, {"test2": "42"}},
 		},
 		{
 			name: "UnsupportedType",
@@ -53,10 +65,7 @@ func TestInterfaceArray(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := InterfaceArray(tt.input.Origin, tt.input.Key)
-			//fmt.Printf("Got:\t %v, %v\n", got, reflect.TypeOf(got))
-			//fmt.Printf("Output:\t %v, %v\n", tt.output, reflect.TypeOf(tt.output))
-			//fmt.Println(reflect.DeepEqual(got, tt.output))
-			if reflect.DeepEqual(got, tt.output) {
+			if !reflect.DeepEqual(got, tt.output) {
 				t.Errorf(
 					"expected InterfaceArray(%v,%v) = %v got %v",
 					tt.input.Origin,
