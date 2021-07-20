@@ -52,6 +52,42 @@ func TestArrayString(t *testing.T) {
 				}, Key: "value", DefaultValue: []string{}},
 			output: []string{},
 		},
+		{
+			name: "InterfaceArrayProper",
+			input: struct {
+				Origin       map[string]interface{}
+				Key          string
+				DefaultValue []string
+			}{
+				Origin: map[string]interface{}{
+					"value": []interface{}{"disused", "sdfsd"},
+				}, Key: "value", DefaultValue: []string{}},
+			output: []string{"disused", "sdfsd"},
+		},
+		{
+			name: "InterfaceArrayProperOneItemWrongType",
+			input: struct {
+				Origin       map[string]interface{}
+				Key          string
+				DefaultValue []string
+			}{
+				Origin: map[string]interface{}{
+					"value": []interface{}{"disused", "sdfsd", 42},
+				}, Key: "value", DefaultValue: []string{}},
+			output: []string{},
+		},
+		{
+			name: "StringArrayProper",
+			input: struct {
+				Origin       map[string]interface{}
+				Key          string
+				DefaultValue []string
+			}{
+				Origin: map[string]interface{}{
+					"value": []string{"disused", "sdfsd"},
+				}, Key: "value", DefaultValue: []string{}},
+			output: []string{"disused", "sdfsd"},
+		},
 	}
 
 	for _, tt := range tests {

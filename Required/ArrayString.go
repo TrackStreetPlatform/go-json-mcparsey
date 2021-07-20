@@ -7,10 +7,24 @@ func ArrayString(origin map[string]interface{}, key string, requiredFields *[]st
 		switch tempValueInField := maybeValueInField.(type) {
 		case string:
 			return strings.Split(tempValueInField, ","), false
+		case []interface{}:
+			var items []string
+			for _, val := range tempValueInField {
+				switch strItem := val.(type) {
+				case string:
+					items = append(items, strItem)
+				default:
+					AppendWhenNotNil(requiredFields, key)
+					return defaultValue, false
+				}
+			}
+			return items, true
+		case []string:
+			return tempValueInField, true
 		default:
-			AppendWhenNotNil(requiredFields, key)
 			break
 		}
 	}
+	AppendWhenNotNil(requiredFields, key)
 	return defaultValue, false
 }
