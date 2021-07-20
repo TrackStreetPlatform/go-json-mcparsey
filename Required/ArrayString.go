@@ -6,7 +6,7 @@ func ArrayString(origin map[string]interface{}, key string, requiredFields *[]st
 	if maybeValueInField, ok := origin[key]; ok {
 		switch tempValueInField := maybeValueInField.(type) {
 		case string:
-			return strings.Split(tempValueInField, ","), false
+			return strings.Split(tempValueInField, ","), true
 		case []interface{}:
 			var items []string
 			for _, val := range tempValueInField {
