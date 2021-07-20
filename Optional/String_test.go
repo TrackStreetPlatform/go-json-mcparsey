@@ -1,65 +1,61 @@
 package Optional
 
-import (
-	"fmt"
-	"testing"
-)
+import "testing"
 
-func TestArrayString(t *testing.T) {
+func TestString(t *testing.T) {
 	tests := []struct {
 		name  string
 		input struct {
 			Origin       map[string]interface{}
 			Key          string
-			DefaultValue []string
+			DefaultValue string
 		}
-		output []string
+		output string
 	}{
-
 		{
-			name: "NonExistentKeys",
+			name: "NonExistingKey",
 			input: struct {
 				Origin       map[string]interface{}
 				Key          string
-				DefaultValue []string
+				DefaultValue string
 			}{
 				Origin: map[string]interface{}{
-					"value": "1",
-				}, Key: "NonExisting", DefaultValue: []string{}},
-			output: []string{},
+					"value": "42",
+				}, Key: "NonExisting", DefaultValue: ""},
+			output: "",
 		},
 		{
 			name: "CaseString",
 			input: struct {
 				Origin       map[string]interface{}
 				Key          string
-				DefaultValue []string
+				DefaultValue string
 			}{
 				Origin: map[string]interface{}{
-					"value": "1,2",
-				}, Key: "value", DefaultValue: []string{}},
-			output: []string{"1", "2"},
+					"value": "42",
+				}, Key: "value", DefaultValue: ""},
+			output: "42",
 		},
 		{
 			name: "UnsupportedType",
 			input: struct {
 				Origin       map[string]interface{}
 				Key          string
-				DefaultValue []string
+				DefaultValue string
 			}{
 				Origin: map[string]interface{}{
-					"value": 42,
-				}, Key: "value", DefaultValue: []string{}},
-			output: []string{},
+					"value": []string{},
+				}, Key: "value", DefaultValue: ""},
+			output: "",
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := ArrayString(tt.input.Origin, tt.input.Key, tt.input.DefaultValue)
-			if fmt.Sprint(got) != fmt.Sprint(tt.output) {
+			got := String(tt.input.Origin, tt.input.Key, tt.input.DefaultValue)
+			if got != tt.output {
 				t.Errorf(
-					"expected ArrayString(%v,%v,%v) = %v; got %v",
+					"expected String(%v,%v,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,
@@ -69,5 +65,4 @@ func TestArrayString(t *testing.T) {
 			}
 		})
 	}
-
 }
