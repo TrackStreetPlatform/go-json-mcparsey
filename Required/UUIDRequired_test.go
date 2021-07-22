@@ -2,21 +2,27 @@ package Required
 
 import (
 	"fmt"
+	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	uuid2 "go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 	"testing"
 )
 
-func TestBool(t *testing.T) {
+func TestUUID(t *testing.T) {
 	type inputStruct struct {
 		Origin       map[string]interface{}
 		Key          string
-		DefaultValue bool
+		DefaultValue uuid.UUID
 	}
 
 	type outputStruct struct {
-		Value          bool
+		Value          uuid.UUID
 		IsValid        bool
 		RequiredFields []string
 	}
+
+	defaultValue, _ := uuid.Parse("01234567-8910-1112-1314-151617181920") // Random bytes
+	correctValue, _ := uuid.Parse("636f7272-6563-7456-616c-756555554944") // Generated from bytes "correctValueUUID"
 
 	tests := []struct {
 		name   string
@@ -24,60 +30,29 @@ func TestBool(t *testing.T) {
 		output outputStruct
 	}{
 		{
-			name: "NoKeyDefaultTrue",
+			name: "NoKey",
 			input: inputStruct{
 				Origin:       map[string]interface{}{},
 				Key:          "key",
-				DefaultValue: true,
+				DefaultValue: defaultValue,
 			},
 			output: outputStruct{
-				Value:   true,
-				IsValid: false,
-				RequiredFields: []string{
-					"key",
-				},
-			},
-		}, {
-			name: "NoKeyDefaultFalse",
-			input: inputStruct{
-				Origin:       map[string]interface{}{},
-				Key:          "key",
-				DefaultValue: false,
-			},
-			output: outputStruct{
-				Value:   false,
-				IsValid: false,
-				RequiredFields: []string{
-					"key",
-				},
+				Value:          defaultValue,
+				IsValid:        false,
+				RequiredFields: []string{"key"},
 			},
 		},
 		{
-			name: "TrueString",
+			name: "ValidString",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"key": "TRUE",
+					"key": "636f7272-6563-7456-616c-756555554944",
 				},
 				Key:          "key",
-				DefaultValue: false,
+				DefaultValue: defaultValue,
 			},
 			output: outputStruct{
-				Value:          true,
-				IsValid:        true,
-				RequiredFields: []string{},
-			},
-		},
-		{
-			name: "FalseString",
-			input: inputStruct{
-				Origin: map[string]interface{}{
-					"key": "0",
-				},
-				Key:          "key",
-				DefaultValue: true,
-			},
-			output: outputStruct{
-				Value:          false,
+				Value:          correctValue,
 				IsValid:        true,
 				RequiredFields: []string{},
 			},
@@ -86,88 +61,106 @@ func TestBool(t *testing.T) {
 			name: "InvalidString",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"key": "not a valid string",
+					"key": "invalid string",
 				},
 				Key:          "key",
-				DefaultValue: true,
+				DefaultValue: defaultValue,
 			},
 			output: outputStruct{
-				Value:   false,
-				IsValid: true,
+				Value:          defaultValue,
+				IsValid:        false,
 				RequiredFields: []string{"key"},
 			},
 		},
 		{
-			name: "TrueInt",
+			name: "ValidBinary",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"key": 1,
+					"key": primitive.Binary{Data: []byte("correctValueUUID")},
 				},
 				Key:          "key",
-				DefaultValue: false,
+				DefaultValue: defaultValue,
 			},
 			output: outputStruct{
-				Value:          true,
+				Value:          correctValue,
 				IsValid:        true,
 				RequiredFields: []string{},
 			},
 		},
 		{
-			name: "FalseInt",
+			name: "InvalidBinary",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"key": 0,
+					"key": primitive.Binary{Data: []byte("bad uuid")},
 				},
 				Key:          "key",
-				DefaultValue: true,
+				DefaultValue: defaultValue,
 			},
 			output: outputStruct{
-				Value:          false,
+				Value:          defaultValue,
+				IsValid:        false,
+				RequiredFields: []string{"key"},
+			},
+		},
+		{
+			name: "ValidBytes",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"key": []byte("correctValueUUID"),
+				},
+				Key:          "key",
+				DefaultValue: defaultValue,
+			},
+			output: outputStruct{
+				Value:          correctValue,
 				IsValid:        true,
 				RequiredFields: []string{},
 			},
 		},
 		{
-			name: "TrueFloat",
+			name: "InvalidBytes",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"key": 1.0,
+					"key": []byte("bad uuid"),
 				},
 				Key:          "key",
-				DefaultValue: false,
+				DefaultValue: defaultValue,
 			},
 			output: outputStruct{
-				Value:          true,
+				Value:          defaultValue,
+				IsValid:        false,
+				RequiredFields: []string{"key"},
+			},
+		},
+		{
+			name: "UUID",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"key": correctValue,
+				},
+				Key:          "key",
+				DefaultValue: defaultValue,
+			},
+			output: outputStruct{
+				Value:          correctValue,
 				IsValid:        true,
 				RequiredFields: []string{},
 			},
 		},
 		{
-			name: "FalseFloat",
+			name: "UUID2",  // UUID2 is more strict than UUID, so there's no case for an invalid UUID2
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"key": 0.0,
+					"key": uuid2.UUID([16]byte{
+						0x63, 0x6f, 0x72, 0x72, 0x65, 0x63, 0x74, 0x56,
+						0x61, 0x6c, 0x75, 0x65, 0x55, 0x55, 0x49, 0x44,
+					}),
 				},
 				Key:          "key",
-				DefaultValue: true,
+				DefaultValue: defaultValue,
 			},
 			output: outputStruct{
-				Value:          false,
-				IsValid:        true,
-				RequiredFields: []string{},
-			},
-		},
-		{
-			name: "Bool",
-			input: inputStruct{
-				Origin: map[string]interface{}{
-					"key": true,
-				},
-				Key:          "key",
-				DefaultValue: false,
-			},
-			output: outputStruct{
-				Value:          true,
+				Value:          correctValue,
 				IsValid:        true,
 				RequiredFields: []string{},
 			},
@@ -176,14 +169,14 @@ func TestBool(t *testing.T) {
 			name: "InvalidType",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"key": []int{1, 2, 3},
+					"key": false,
 				},
 				Key:          "key",
-				DefaultValue: false,
+				DefaultValue: defaultValue,
 			},
 			output: outputStruct{
-				Value:   false,
-				IsValid: false,
+				Value:          defaultValue,
+				IsValid:        false,
 				RequiredFields: []string{"key"},
 			},
 		},
@@ -192,10 +185,10 @@ func TestBool(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var requiredFieldsGot []string
-			valueGot, isValidGot := Bool(tt.input.Origin, tt.input.Key, &requiredFieldsGot, tt.input.DefaultValue)
+			valueGot, isValidGot := UUID(tt.input.Origin, tt.input.Key, &requiredFieldsGot, tt.input.DefaultValue)
 			if fmt.Sprint(valueGot) != fmt.Sprint(tt.output.Value) {
 				t.Errorf(
-					"expected value on Bool(%v,%v,requiredFields,%v) = %v; got %v",
+					"expected value on UUID(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,
@@ -205,7 +198,7 @@ func TestBool(t *testing.T) {
 			}
 			if fmt.Sprint(isValidGot) != fmt.Sprint(tt.output.IsValid) {
 				t.Errorf(
-					"expected isValid on Bool(%v,%v,requiredFields,%v) = %v; got %v",
+					"expected isValid on UUID(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,
@@ -216,7 +209,7 @@ func TestBool(t *testing.T) {
 
 			if fmt.Sprint(requiredFieldsGot) != fmt.Sprint(tt.output.RequiredFields) {
 				t.Errorf(
-					"expected requiredFields on Bool(%v,%v,requiredFields,%v) = %v; got %v",
+					"expected requiredFields on UUID(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,

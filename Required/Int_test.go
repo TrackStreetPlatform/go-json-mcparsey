@@ -5,15 +5,15 @@ import (
 	"testing"
 )
 
-func TestBool(t *testing.T) {
+func TestInt(t *testing.T) {
 	type inputStruct struct {
 		Origin       map[string]interface{}
 		Key          string
-		DefaultValue bool
+		DefaultValue int
 	}
 
 	type outputStruct struct {
-		Value          bool
+		Value          int
 		IsValid        bool
 		RequiredFields []string
 	}
@@ -24,60 +24,89 @@ func TestBool(t *testing.T) {
 		output outputStruct
 	}{
 		{
-			name: "NoKeyDefaultTrue",
+			name: "NoKey",
 			input: inputStruct{
 				Origin:       map[string]interface{}{},
 				Key:          "key",
-				DefaultValue: true,
+				DefaultValue: -1,
 			},
 			output: outputStruct{
-				Value:   true,
+				Value:   -1,
 				IsValid: false,
-				RequiredFields: []string{
-					"key",
-				},
-			},
-		}, {
-			name: "NoKeyDefaultFalse",
-			input: inputStruct{
-				Origin:       map[string]interface{}{},
-				Key:          "key",
-				DefaultValue: false,
-			},
-			output: outputStruct{
-				Value:   false,
-				IsValid: false,
-				RequiredFields: []string{
-					"key",
-				},
+				RequiredFields: []string{"key"},
 			},
 		},
 		{
-			name: "TrueString",
+			name: "Int",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"key": "TRUE",
+					"key": 17,
 				},
 				Key:          "key",
-				DefaultValue: false,
+				DefaultValue: -1,
 			},
 			output: outputStruct{
-				Value:          true,
+				Value:          17,
 				IsValid:        true,
 				RequiredFields: []string{},
 			},
 		},
 		{
-			name: "FalseString",
+			name: "Int32",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"key": "0",
+					"key": int32(2147483647),
 				},
 				Key:          "key",
-				DefaultValue: true,
+				DefaultValue: -1,
 			},
 			output: outputStruct{
-				Value:          false,
+				Value:          2147483647,
+				IsValid:        true,
+				RequiredFields: []string{},
+			},
+		},
+		{
+			name: "Int64",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"key": int64(-9223372036854775808),
+				},
+				Key:          "key",
+				DefaultValue: -1,
+			},
+			output: outputStruct{
+				Value:          -9223372036854775808,
+				IsValid:        true,
+				RequiredFields: []string{},
+			},
+		},
+		{
+			name: "Float",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"key": 8.3,
+				},
+				Key:          "key",
+				DefaultValue: -1,
+			},
+			output: outputStruct{
+				Value:          8,
+				IsValid:        true,
+				RequiredFields: []string{},
+			},
+		},
+		{
+			name: "String",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"key": "-163",
+				},
+				Key:          "key",
+				DefaultValue: -1,
+			},
+			output: outputStruct{
+				Value:          -163,
 				IsValid:        true,
 				RequiredFields: []string{},
 			},
@@ -86,90 +115,15 @@ func TestBool(t *testing.T) {
 			name: "InvalidString",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"key": "not a valid string",
+					"key": "invalid string",
 				},
 				Key:          "key",
-				DefaultValue: true,
+				DefaultValue: -1,
 			},
 			output: outputStruct{
-				Value:   false,
-				IsValid: true,
+				Value:          -1,
+				IsValid:        false,
 				RequiredFields: []string{"key"},
-			},
-		},
-		{
-			name: "TrueInt",
-			input: inputStruct{
-				Origin: map[string]interface{}{
-					"key": 1,
-				},
-				Key:          "key",
-				DefaultValue: false,
-			},
-			output: outputStruct{
-				Value:          true,
-				IsValid:        true,
-				RequiredFields: []string{},
-			},
-		},
-		{
-			name: "FalseInt",
-			input: inputStruct{
-				Origin: map[string]interface{}{
-					"key": 0,
-				},
-				Key:          "key",
-				DefaultValue: true,
-			},
-			output: outputStruct{
-				Value:          false,
-				IsValid:        true,
-				RequiredFields: []string{},
-			},
-		},
-		{
-			name: "TrueFloat",
-			input: inputStruct{
-				Origin: map[string]interface{}{
-					"key": 1.0,
-				},
-				Key:          "key",
-				DefaultValue: false,
-			},
-			output: outputStruct{
-				Value:          true,
-				IsValid:        true,
-				RequiredFields: []string{},
-			},
-		},
-		{
-			name: "FalseFloat",
-			input: inputStruct{
-				Origin: map[string]interface{}{
-					"key": 0.0,
-				},
-				Key:          "key",
-				DefaultValue: true,
-			},
-			output: outputStruct{
-				Value:          false,
-				IsValid:        true,
-				RequiredFields: []string{},
-			},
-		},
-		{
-			name: "Bool",
-			input: inputStruct{
-				Origin: map[string]interface{}{
-					"key": true,
-				},
-				Key:          "key",
-				DefaultValue: false,
-			},
-			output: outputStruct{
-				Value:          true,
-				IsValid:        true,
-				RequiredFields: []string{},
 			},
 		},
 		{
@@ -179,11 +133,11 @@ func TestBool(t *testing.T) {
 					"key": []int{1, 2, 3},
 				},
 				Key:          "key",
-				DefaultValue: false,
+				DefaultValue: -1,
 			},
 			output: outputStruct{
-				Value:   false,
-				IsValid: false,
+				Value:          -1,
+				IsValid:        false,
 				RequiredFields: []string{"key"},
 			},
 		},
@@ -192,10 +146,10 @@ func TestBool(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var requiredFieldsGot []string
-			valueGot, isValidGot := Bool(tt.input.Origin, tt.input.Key, &requiredFieldsGot, tt.input.DefaultValue)
+			valueGot, isValidGot := Int(tt.input.Origin, tt.input.Key, &requiredFieldsGot, tt.input.DefaultValue)
 			if fmt.Sprint(valueGot) != fmt.Sprint(tt.output.Value) {
 				t.Errorf(
-					"expected value on Bool(%v,%v,requiredFields,%v) = %v; got %v",
+					"expected value on Int(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,
@@ -205,7 +159,7 @@ func TestBool(t *testing.T) {
 			}
 			if fmt.Sprint(isValidGot) != fmt.Sprint(tt.output.IsValid) {
 				t.Errorf(
-					"expected isValid on Bool(%v,%v,requiredFields,%v) = %v; got %v",
+					"expected isValid on Int(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,
@@ -216,7 +170,7 @@ func TestBool(t *testing.T) {
 
 			if fmt.Sprint(requiredFieldsGot) != fmt.Sprint(tt.output.RequiredFields) {
 				t.Errorf(
-					"expected requiredFields on Bool(%v,%v,requiredFields,%v) = %v; got %v",
+					"expected requiredFields on Int(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,

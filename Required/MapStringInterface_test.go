@@ -5,18 +5,21 @@ import (
 	"testing"
 )
 
-func TestString(t *testing.T) {
+func TestMapStringInterface(t *testing.T) {
 	type inputStruct struct {
 		Origin       map[string]interface{}
 		Key          string
-		DefaultValue string
+		DefaultValue map[string]interface{}
 	}
 
 	type outputStruct struct {
-		Value          string
+		Value          map[string]interface{}
 		IsValid        bool
 		RequiredFields []string
 	}
+
+	defaultValue := map[string]interface{}{"default": "value"}
+	correctValue := map[string]interface{}{"one": 1, "two": 2.0}
 
 	tests := []struct {
 		name   string
@@ -28,10 +31,10 @@ func TestString(t *testing.T) {
 			input: inputStruct{
 				Origin:       map[string]interface{}{},
 				Key:          "key",
-				DefaultValue: "default",
+				DefaultValue: defaultValue,
 			},
 			output: outputStruct{
-				Value:          "default",
+				Value:          defaultValue,
 				IsValid:        false,
 				RequiredFields: []string{"key"},
 			},
@@ -40,13 +43,13 @@ func TestString(t *testing.T) {
 			name: "ValidValue",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"key": "value",
+					"key": correctValue,
 				},
 				Key:          "key",
-				DefaultValue: "default",
+				DefaultValue: defaultValue,
 			},
 			output: outputStruct{
-				Value:          "value",
+				Value:          correctValue,
 				IsValid:        true,
 				RequiredFields: []string{},
 			},
@@ -58,10 +61,10 @@ func TestString(t *testing.T) {
 					"key": false,
 				},
 				Key:          "key",
-				DefaultValue: "default",
+				DefaultValue: defaultValue,
 			},
 			output: outputStruct{
-				Value:          "default",
+				Value:          defaultValue,
 				IsValid:        false,
 				RequiredFields: []string{"key"},
 			},
@@ -71,10 +74,10 @@ func TestString(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var requiredFieldsGot []string
-			valueGot, isValidGot := String(tt.input.Origin, tt.input.Key, &requiredFieldsGot, tt.input.DefaultValue)
+			valueGot, isValidGot := MapStringInterface(tt.input.Origin, tt.input.Key, &requiredFieldsGot, tt.input.DefaultValue)
 			if fmt.Sprint(valueGot) != fmt.Sprint(tt.output.Value) {
 				t.Errorf(
-					"expected value on String(%v,%v,requiredFields,%v) = %v; got %v",
+					"expected value on MapStringInterface(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,
@@ -84,7 +87,7 @@ func TestString(t *testing.T) {
 			}
 			if fmt.Sprint(isValidGot) != fmt.Sprint(tt.output.IsValid) {
 				t.Errorf(
-					"expected isValid on String(%v,%v,requiredFields,%v) = %v; got %v",
+					"expected isValid on MapStringInterface(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,
@@ -95,7 +98,7 @@ func TestString(t *testing.T) {
 
 			if fmt.Sprint(requiredFieldsGot) != fmt.Sprint(tt.output.RequiredFields) {
 				t.Errorf(
-					"expected requiredFields on String(%v,%v,requiredFields,%v) = %v; got %v",
+					"expected requiredFields on MapStringInterface(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,

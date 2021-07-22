@@ -5,15 +5,15 @@ import (
 	"testing"
 )
 
-func TestString(t *testing.T) {
+func TestFloat64(t *testing.T) {
 	type inputStruct struct {
 		Origin       map[string]interface{}
 		Key          string
-		DefaultValue string
+		DefaultValue float64
 	}
 
 	type outputStruct struct {
-		Value          string
+		Value          float64
 		IsValid        bool
 		RequiredFields []string
 	}
@@ -28,40 +28,85 @@ func TestString(t *testing.T) {
 			input: inputStruct{
 				Origin:       map[string]interface{}{},
 				Key:          "key",
-				DefaultValue: "default",
+				DefaultValue: -1.0,
 			},
 			output: outputStruct{
-				Value:          "default",
-				IsValid:        false,
+				Value:   -1.0,
+				IsValid: false,
 				RequiredFields: []string{"key"},
 			},
 		},
 		{
-			name: "ValidValue",
+			name: "Int",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"key": "value",
+					"key": 17,
 				},
 				Key:          "key",
-				DefaultValue: "default",
+				DefaultValue: -1.0,
 			},
 			output: outputStruct{
-				Value:          "value",
+				Value:          17.0,
 				IsValid:        true,
 				RequiredFields: []string{},
+			},
+		},
+		{
+			name: "Float",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"key": 8.3,
+				},
+				Key:          "key",
+				DefaultValue: -1.0,
+			},
+			output: outputStruct{
+				Value:          8.3,
+				IsValid:        true,
+				RequiredFields: []string{},
+			},
+		},
+		{
+			name: "String",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"key": "-163.12",
+				},
+				Key:          "key",
+				DefaultValue: -1.0,
+			},
+			output: outputStruct{
+				Value:          -163.12,
+				IsValid:        true,
+				RequiredFields: []string{},
+			},
+		},
+		{
+			name: "InvalidString",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"key": "invalid string",
+				},
+				Key:          "key",
+				DefaultValue: -1.0,
+			},
+			output: outputStruct{
+				Value:          -1.0,
+				IsValid:        false,
+				RequiredFields: []string{"key"},
 			},
 		},
 		{
 			name: "InvalidType",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"key": false,
+					"key": []int{1, 2, 3},
 				},
 				Key:          "key",
-				DefaultValue: "default",
+				DefaultValue: -1.0,
 			},
 			output: outputStruct{
-				Value:          "default",
+				Value:          -1.0,
 				IsValid:        false,
 				RequiredFields: []string{"key"},
 			},
@@ -71,10 +116,10 @@ func TestString(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var requiredFieldsGot []string
-			valueGot, isValidGot := String(tt.input.Origin, tt.input.Key, &requiredFieldsGot, tt.input.DefaultValue)
+			valueGot, isValidGot := Float64(tt.input.Origin, tt.input.Key, &requiredFieldsGot, tt.input.DefaultValue)
 			if fmt.Sprint(valueGot) != fmt.Sprint(tt.output.Value) {
 				t.Errorf(
-					"expected value on String(%v,%v,requiredFields,%v) = %v; got %v",
+					"expected value on Float64(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,
@@ -84,7 +129,7 @@ func TestString(t *testing.T) {
 			}
 			if fmt.Sprint(isValidGot) != fmt.Sprint(tt.output.IsValid) {
 				t.Errorf(
-					"expected isValid on String(%v,%v,requiredFields,%v) = %v; got %v",
+					"expected isValid on Float64(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,
@@ -95,7 +140,7 @@ func TestString(t *testing.T) {
 
 			if fmt.Sprint(requiredFieldsGot) != fmt.Sprint(tt.output.RequiredFields) {
 				t.Errorf(
-					"expected requiredFields on String(%v,%v,requiredFields,%v) = %v; got %v",
+					"expected requiredFields on Float64(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					tt.input.DefaultValue,
