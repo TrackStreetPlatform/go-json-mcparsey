@@ -172,6 +172,23 @@ func TestBool(t *testing.T) {
 				RequiredFields: []string{},
 			},
 		},
+		{
+			name: "InvalidType",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"use_tor": []int{1, 2, 3},
+				},
+				Key:          "use_tor",
+				DefaultValue: false,
+			},
+			output: outputStruct{
+				Value:          false,
+				IsValid:        false,
+				RequiredFields: []string{
+					"use_tor",
+				},
+			},
+		},
 	}
 
 	for _, tt := range tests {
