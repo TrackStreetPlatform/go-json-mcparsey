@@ -5,19 +5,19 @@ import (
 	"testing"
 )
 
-type inputStruct struct {
-	Origin       map[string]interface{}
-	Key          string
-	DefaultValue bool
-}
-
-type outputStruct struct {
-	Value          bool
-	IsValid        bool
-	RequiredFields []string
-}
-
 func TestBool(t *testing.T) {
+	type inputStruct struct {
+		Origin       map[string]interface{}
+		Key          string
+		DefaultValue bool
+	}
+
+	type outputStruct struct {
+		Value          bool
+		IsValid        bool
+		RequiredFields []string
+	}
+
 	tests := []struct {
 		name   string
 		input  inputStruct
