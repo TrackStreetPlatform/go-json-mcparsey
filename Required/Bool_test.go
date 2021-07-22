@@ -35,7 +35,8 @@ func TestBool(t *testing.T) {
 				IsValid: false,
 				RequiredFields: []string{
 					"use_tor",
-				}},
+				},
+			},
 		}, {
 			name: "NoKeyDefaultFalse",
 			input: inputStruct{
@@ -48,7 +49,8 @@ func TestBool(t *testing.T) {
 				IsValid: false,
 				RequiredFields: []string{
 					"use_tor",
-				}},
+				},
+			},
 		},
 		{
 			name: "TrueString",
@@ -182,8 +184,8 @@ func TestBool(t *testing.T) {
 				DefaultValue: false,
 			},
 			output: outputStruct{
-				Value:          false,
-				IsValid:        false,
+				Value:   false,
+				IsValid: false,
 				RequiredFields: []string{
 					"use_tor",
 				},
