@@ -127,7 +127,7 @@ func TestFloat64(t *testing.T) {
 					valueGot,
 				)
 			}
-			if fmt.Sprint(isValidGot) != fmt.Sprint(tt.output.IsValid) {
+			if isValidGot != tt.output.IsValid {
 				t.Errorf(
 					"expected isValid on Float64(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,

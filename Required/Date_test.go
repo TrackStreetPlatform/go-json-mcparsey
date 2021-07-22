@@ -132,7 +132,7 @@ func TestDate(t *testing.T) {
 					valueGot,
 				)
 			}
-			if fmt.Sprint(isValidGot) != fmt.Sprint(tt.output.IsValid) {
+			if isValidGot != tt.output.IsValid {
 				t.Errorf(
 					"expected isValid on Date(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
@@ -142,7 +142,6 @@ func TestDate(t *testing.T) {
 					isValidGot,
 				)
 			}
-
 			if fmt.Sprint(requiredFieldsGot) != fmt.Sprint(tt.output.RequiredFields) {
 				t.Errorf(
 					"expected requiredFields on Date(%v,%v,requiredFields,%v) = %v; got %v",
@@ -153,7 +152,6 @@ func TestDate(t *testing.T) {
 					requiredFieldsGot,
 				)
 			}
-
 		})
 	}
 }

@@ -89,11 +89,11 @@ func TestBool(t *testing.T) {
 					"key": "not a valid string",
 				},
 				Key:          "key",
-				DefaultValue: true,
+				DefaultValue: false,
 			},
 			output: outputStruct{
 				Value:   false,
-				IsValid: true,
+				IsValid: false,
 				RequiredFields: []string{"key"},
 			},
 		},
@@ -193,7 +193,7 @@ func TestBool(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			var requiredFieldsGot []string
 			valueGot, isValidGot := Bool(tt.input.Origin, tt.input.Key, &requiredFieldsGot, tt.input.DefaultValue)
-			if fmt.Sprint(valueGot) != fmt.Sprint(tt.output.Value) {
+			if valueGot != tt.output.Value {
 				t.Errorf(
 					"expected value on Bool(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
@@ -203,7 +203,7 @@ func TestBool(t *testing.T) {
 					valueGot,
 				)
 			}
-			if fmt.Sprint(isValidGot) != fmt.Sprint(tt.output.IsValid) {
+			if isValidGot != tt.output.IsValid {
 				t.Errorf(
 					"expected isValid on Bool(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
@@ -213,7 +213,6 @@ func TestBool(t *testing.T) {
 					isValidGot,
 				)
 			}
-
 			if fmt.Sprint(requiredFieldsGot) != fmt.Sprint(tt.output.RequiredFields) {
 				t.Errorf(
 					"expected requiredFields on Bool(%v,%v,requiredFields,%v) = %v; got %v",
@@ -224,7 +223,6 @@ func TestBool(t *testing.T) {
 					requiredFieldsGot,
 				)
 			}
-
 		})
 	}
 }

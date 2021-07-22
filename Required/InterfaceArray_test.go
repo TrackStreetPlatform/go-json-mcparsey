@@ -111,7 +111,7 @@ func TestInterfaceArray(t *testing.T) {
 					valueGot,
 				)
 			}
-			if fmt.Sprint(isValidGot) != fmt.Sprint(tt.output.IsValid) {
+			if isValidGot != tt.output.IsValid {
 				t.Errorf(
 					"expected isValid on InterfaceArray(%v,%v,requiredFields) = %v; got %v",
 					tt.input.Origin,
@@ -120,7 +120,6 @@ func TestInterfaceArray(t *testing.T) {
 					isValidGot,
 				)
 			}
-
 			if fmt.Sprint(requiredFieldsGot) != fmt.Sprint(tt.output.RequiredFields) {
 				t.Errorf(
 					"expected requiredFields on InterfaceArray(%v,%v,requiredFields) = %v; got %v",
@@ -130,7 +129,6 @@ func TestInterfaceArray(t *testing.T) {
 					requiredFieldsGot,
 				)
 			}
-
 		})
 	}
 }

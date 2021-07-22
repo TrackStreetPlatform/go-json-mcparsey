@@ -148,7 +148,7 @@ func TestUUID(t *testing.T) {
 			},
 		},
 		{
-			name: "UUID2",  // UUID2 is more strict than UUID, so there's no case for an invalid UUID2
+			name: "UUID2",
 			input: inputStruct{
 				Origin: map[string]interface{}{
 					"key": uuid2.UUID([16]byte{
@@ -196,7 +196,7 @@ func TestUUID(t *testing.T) {
 					valueGot,
 				)
 			}
-			if fmt.Sprint(isValidGot) != fmt.Sprint(tt.output.IsValid) {
+			if isValidGot != tt.output.IsValid {
 				t.Errorf(
 					"expected isValid on UUID(%v,%v,requiredFields,%v) = %v; got %v",
 					tt.input.Origin,
@@ -206,7 +206,6 @@ func TestUUID(t *testing.T) {
 					isValidGot,
 				)
 			}
-
 			if fmt.Sprint(requiredFieldsGot) != fmt.Sprint(tt.output.RequiredFields) {
 				t.Errorf(
 					"expected requiredFields on UUID(%v,%v,requiredFields,%v) = %v; got %v",
@@ -217,7 +216,6 @@ func TestUUID(t *testing.T) {
 					requiredFieldsGot,
 				)
 			}
-
 		})
 	}
 }
