@@ -1,6 +1,6 @@
 package Required
 
-func InterfaceArray(origin map[string]interface{}, key string, requiredFields *[]string) (value []map[string]interface{}, isValid bool) {
+func InterfaceArray(origin map[string]interface{}, key string, missingFields *[]string) (value []map[string]interface{}, isValid bool) {
 	items := make([]map[string]interface{}, 0)
 	isValid = false
 	if maybeValueInField, ok := origin[key]; ok {
@@ -16,10 +16,10 @@ func InterfaceArray(origin map[string]interface{}, key string, requiredFields *[
 				}
 			}
 		default:
-			AppendWhenNotNil(requiredFields, key)
+			AppendNotNil(missingFields, key)
 		}
 	} else {
-		AppendWhenNotNil(requiredFields, key)
+		AppendNotNil(missingFields, key)
 	}
 	return items, isValid
 }

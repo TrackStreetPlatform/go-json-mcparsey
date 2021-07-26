@@ -5,20 +5,17 @@ import (
 	"testing"
 )
 
-type inputStruct struct {
-	Origin       map[string]interface{}
-	Key          string
-	DefaultValue []string
-}
-
-type testArrayString struct {
-	name   string
-	input  inputStruct
-	output []string
-}
-
 func TestArrayString(t *testing.T) {
-	tests := []testArrayString{
+	type inputStruct struct {
+		Origin       map[string]interface{}
+		Key          string
+		DefaultValue []string
+	}
+	tests := []struct {
+		name   string
+		input  inputStruct
+		output []string
+	}{
 		{
 			name: "NonExistentKeys",
 			input: inputStruct{

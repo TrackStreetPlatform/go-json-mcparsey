@@ -10,23 +10,20 @@ import (
 )
 
 func TestUUID(t *testing.T) {
+	type inputStruct struct {
+		Origin       map[string]interface{}
+		Key          string
+		DefaultValue uuid.UUID
+	}
 	testUUID := uuid.MustParse("11111111-1111-1111-1111-111111111111")
 	tests := []struct {
-		name  string
-		input struct {
-			Origin       map[string]interface{}
-			Key          string
-			DefaultValue uuid.UUID
-		}
+		name   string
+		input  inputStruct
 		output uuid.UUID
 	}{
 		{
 			name: "NonExistingKey",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue uuid.UUID
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": testUUID,
 				}, Key: "NonExisting", DefaultValue: uuid.UUID{}},
@@ -34,11 +31,7 @@ func TestUUID(t *testing.T) {
 		},
 		{
 			name: "StringCase",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue uuid.UUID
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": "11111111-1111-1111-1111-111111111111",
 				}, Key: "value", DefaultValue: uuid.UUID{}},
@@ -46,11 +39,7 @@ func TestUUID(t *testing.T) {
 		},
 		{
 			name: "StringCaseError",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue uuid.UUID
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": "not a valid UUID",
 				}, Key: "value", DefaultValue: uuid.UUID{}},
@@ -58,11 +47,7 @@ func TestUUID(t *testing.T) {
 		},
 		{
 			name: "BinaryCase",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue uuid.UUID
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": primitive.Binary{Data: []byte{17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17}},
 				}, Key: "value", DefaultValue: uuid.UUID{}},
@@ -70,11 +55,7 @@ func TestUUID(t *testing.T) {
 		},
 		{
 			name: "BinaryCaseError",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue uuid.UUID
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": primitive.Binary{Data: []byte{1, 1, 1, 1}},
 				}, Key: "value", DefaultValue: uuid.UUID{}},
@@ -82,11 +63,7 @@ func TestUUID(t *testing.T) {
 		},
 		{
 			name: "ByteArrayCase",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue uuid.UUID
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []byte{17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17},
 				}, Key: "value", DefaultValue: uuid.UUID{}},
@@ -94,11 +71,7 @@ func TestUUID(t *testing.T) {
 		},
 		{
 			name: "ByteArrayCaseError",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue uuid.UUID
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []byte{1, 1, 1, 1},
 				}, Key: "value", DefaultValue: uuid.UUID{}},
@@ -106,11 +79,7 @@ func TestUUID(t *testing.T) {
 		},
 		{
 			name: "CaseUUID",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue uuid.UUID
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": testUUID,
 				}, Key: "value", DefaultValue: uuid.UUID{}},
@@ -118,11 +87,7 @@ func TestUUID(t *testing.T) {
 		},
 		{
 			name: "CaseUUIDMongo",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue uuid.UUID
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": uuid2.UUID{},
 				}, Key: "value", DefaultValue: testUUID},
@@ -130,11 +95,7 @@ func TestUUID(t *testing.T) {
 		},
 		{
 			name: "UnsupportedType",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue uuid.UUID
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []string{},
 				}, Key: "value", DefaultValue: uuid.UUID{}},

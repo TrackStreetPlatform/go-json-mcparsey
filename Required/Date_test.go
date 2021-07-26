@@ -2,20 +2,25 @@ package Required
 
 import (
 	"fmt"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"testing"
+	"time"
 )
 
-func TestArrayString(t *testing.T) {
+func TestDate(t *testing.T) {
 	type inputStruct struct {
 		Origin       map[string]interface{}
 		Key          string
-		DefaultValue []string
+		DefaultValue time.Time
 	}
 	type outputStruct struct {
-		Value         []string
+		Value         time.Time
 		IsValid       bool
 		MissingFields []string
 	}
+	strTime := "1997-03-01T18:45:26Z"
+	testTime, _ := time.Parse("2006-01-02T15:04:05Z", strTime)
+	testDateTime := primitive.NewDateTimeFromTime(testTime)
 	tests := []struct {
 		name   string
 		input  inputStruct
@@ -24,12 +29,12 @@ func TestArrayString(t *testing.T) {
 		{
 			name: "NonExistentKeys",
 			input: inputStruct{
-				Origin:       map[string]interface{}{"value": "1"},
+				Origin:       map[string]interface{}{"value": testTime},
 				Key:          "NonExisting",
-				DefaultValue: []string{},
+				DefaultValue: time.Time{},
 			},
 			output: outputStruct{
-				Value:         []string{},
+				Value:         time.Time{},
 				IsValid:       false,
 				MissingFields: []string{"NonExisting"},
 			},
@@ -37,63 +42,66 @@ func TestArrayString(t *testing.T) {
 		{
 			name: "CaseString",
 			input: inputStruct{
-				Origin:       map[string]interface{}{"value": "1,2"},
+				Origin:       map[string]interface{}{"value": strTime},
 				Key:          "value",
-				DefaultValue: []string{},
+				DefaultValue: time.Time{},
 			},
 			output: outputStruct{
-				Value:         []string{"1", "2"},
+				Value:         testTime,
 				IsValid:       true,
 				MissingFields: []string{},
 			},
 		},
 		{
-			name: "CaseInterfaceList",
+			name: "CaseStringLayoutError",
 			input: inputStruct{
-				Origin:       map[string]interface{}{"value": []interface{}{"1", "2"}},
+				Origin: map[string]interface{}{
+					"value": "2014-11-12T11:45:260Z",
+				},
 				Key:          "value",
-				DefaultValue: []string{}},
-			output: outputStruct{
-				Value:         []string{"1", "2"},
-				IsValid:       true,
-				MissingFields: []string{},
-			},
-		},
-		{
-			name: "CaseInterfaceListWrongType",
-			input: inputStruct{
-				Origin:       map[string]interface{}{"value": []interface{}{"1", 42}},
-				Key:          "value",
-				DefaultValue: []string{},
+				DefaultValue: time.Time{},
 			},
 			output: outputStruct{
-				Value:         []string{},
+				Value:         time.Time{},
 				IsValid:       false,
 				MissingFields: []string{"value"},
 			},
 		},
 		{
-			name: "CaseStringList",
+			name: "CaseTime",
 			input: inputStruct{
-				Origin:       map[string]interface{}{"value": []string{"1", "2"}},
+				Origin:       map[string]interface{}{"value": testTime},
 				Key:          "value",
-				DefaultValue: []string{},
+				DefaultValue: time.Time{},
 			},
 			output: outputStruct{
-				Value:         []string{"1", "2"},
+				Value:         testTime,
 				IsValid:       true,
-				MissingFields: []string{""},
+				MissingFields: []string{},
+			},
+		},
+		{
+			name: "CaseDateTime",
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": testDateTime},
+				Key:          "value",
+				DefaultValue: time.Time{},
+			},
+			output: outputStruct{
+				Value:         testDateTime.Time(),
+				IsValid:       true,
+				MissingFields: []string{},
 			},
 		},
 		{
 			name: "UnsupportedType",
 			input: inputStruct{
-				Origin:       map[string]interface{}{"value": true},
+				Origin:       map[string]interface{}{"value": 1},
 				Key:          "value",
-				DefaultValue: []string{},
+				DefaultValue: time.Time{},
 			},
 			output: outputStruct{
-				Value:         []string{},
+				Value:         time.Time{},
 				IsValid:       false,
 				MissingFields: []string{"value"},
 			},
@@ -103,10 +111,10 @@ func TestArrayString(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var missingFieldsGot []string
-			gotValue, gotValid := ArrayString(tt.input.Origin, tt.input.Key, &missingFieldsGot, tt.input.DefaultValue)
+			gotValue, gotValid := Date(tt.input.Origin, tt.input.Key, &missingFieldsGot, tt.input.DefaultValue)
 			if fmt.Sprint(gotValue) != fmt.Sprint(tt.output.Value) {
 				t.Errorf(
-					"expected value on ArrayString(%v,%v,%v,%v) = %v; got %v",
+					"expected value on Date(%v,%v,%v,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					missingFieldsGot,
@@ -117,7 +125,7 @@ func TestArrayString(t *testing.T) {
 			}
 			if fmt.Sprint(gotValid) != fmt.Sprint(tt.output.IsValid) {
 				t.Errorf(
-					"expected isValid on ArrayString(%v,%v,%v,%v) = %v; got %v",
+					"expected isValid on Date(%v,%v,%v,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					missingFieldsGot,
@@ -129,7 +137,7 @@ func TestArrayString(t *testing.T) {
 
 			if fmt.Sprint(missingFieldsGot) != fmt.Sprint(tt.output.MissingFields) {
 				t.Errorf(
-					"expected missingFields on ArrayString(%v,%v,%v,%v) = %v; got %v",
+					"expected missingFields on Date(%v,%v,%v,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					missingFieldsGot,
@@ -140,5 +148,4 @@ func TestArrayString(t *testing.T) {
 			}
 		})
 	}
-
 }

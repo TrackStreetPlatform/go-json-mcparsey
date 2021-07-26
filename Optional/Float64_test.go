@@ -5,22 +5,19 @@ import (
 )
 
 func TestFloat64(t *testing.T) {
+	type inputStruct struct {
+		Origin       map[string]interface{}
+		Key          string
+		DefaultValue float64
+	}
 	tests := []struct {
-		name  string
-		input struct {
-			Origin       map[string]interface{}
-			Key          string
-			DefaultValue float64
-		}
+		name   string
+		input  inputStruct
 		output float64
 	}{
 		{
 			name: "NonExistingKey",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue float64
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": 42.,
 				}, Key: "NonExisting", DefaultValue: 0.},
@@ -28,11 +25,7 @@ func TestFloat64(t *testing.T) {
 		},
 		{
 			name: "CaseInt",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue float64
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": 42,
 				}, Key: "value", DefaultValue: 0.},
@@ -40,11 +33,7 @@ func TestFloat64(t *testing.T) {
 		},
 		{
 			name: "CaseFloat",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue float64
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": 42.,
 				}, Key: "value", DefaultValue: 0.},
@@ -52,11 +41,7 @@ func TestFloat64(t *testing.T) {
 		},
 		{
 			name: "UnsupportedType",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue float64
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []string{},
 				}, Key: "value", DefaultValue: 0.},

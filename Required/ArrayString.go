@@ -2,7 +2,7 @@ package Required
 
 import "strings"
 
-func ArrayString(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue []string) (value []string, isValid bool) {
+func ArrayString(origin map[string]interface{}, key string, missingFields *[]string, defaultValue []string) (value []string, isValid bool) {
 	if maybeValueInField, ok := origin[key]; ok {
 		switch tempValueInField := maybeValueInField.(type) {
 		case string:
@@ -14,7 +14,7 @@ func ArrayString(origin map[string]interface{}, key string, requiredFields *[]st
 				case string:
 					items = append(items, strItem)
 				default:
-					AppendWhenNotNil(requiredFields, key)
+					AppendNotNil(missingFields, key)
 					return defaultValue, false
 				}
 			}
@@ -25,6 +25,6 @@ func ArrayString(origin map[string]interface{}, key string, requiredFields *[]st
 			break
 		}
 	}
-	AppendWhenNotNil(requiredFields, key)
+	AppendNotNil(missingFields, key)
 	return defaultValue, false
 }

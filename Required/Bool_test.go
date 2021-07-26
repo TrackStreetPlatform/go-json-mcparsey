@@ -5,14 +5,14 @@ import (
 	"testing"
 )
 
-func TestArrayString(t *testing.T) {
+func TestBool(t *testing.T) {
 	type inputStruct struct {
 		Origin       map[string]interface{}
 		Key          string
-		DefaultValue []string
+		DefaultValue bool
 	}
 	type outputStruct struct {
-		Value         []string
+		Value         bool
 		IsValid       bool
 		MissingFields []string
 	}
@@ -24,12 +24,12 @@ func TestArrayString(t *testing.T) {
 		{
 			name: "NonExistentKeys",
 			input: inputStruct{
-				Origin:       map[string]interface{}{"value": "1"},
+				Origin:       map[string]interface{}{"value": true},
 				Key:          "NonExisting",
-				DefaultValue: []string{},
+				DefaultValue: false,
 			},
 			output: outputStruct{
-				Value:         []string{},
+				Value:         false,
 				IsValid:       false,
 				MissingFields: []string{"NonExisting"},
 			},
@@ -37,63 +37,77 @@ func TestArrayString(t *testing.T) {
 		{
 			name: "CaseString",
 			input: inputStruct{
-				Origin:       map[string]interface{}{"value": "1,2"},
+				Origin:       map[string]interface{}{"value": "true"},
 				Key:          "value",
-				DefaultValue: []string{},
+				DefaultValue: false,
 			},
 			output: outputStruct{
-				Value:         []string{"1", "2"},
+				Value:         true,
 				IsValid:       true,
 				MissingFields: []string{},
 			},
 		},
 		{
-			name: "CaseInterfaceList",
+			name: "CaseStringErr",
 			input: inputStruct{
-				Origin:       map[string]interface{}{"value": []interface{}{"1", "2"}},
+				Origin:       map[string]interface{}{"value": "one"},
 				Key:          "value",
-				DefaultValue: []string{}},
-			output: outputStruct{
-				Value:         []string{"1", "2"},
-				IsValid:       true,
-				MissingFields: []string{},
-			},
-		},
-		{
-			name: "CaseInterfaceListWrongType",
-			input: inputStruct{
-				Origin:       map[string]interface{}{"value": []interface{}{"1", 42}},
-				Key:          "value",
-				DefaultValue: []string{},
+				DefaultValue: false,
 			},
 			output: outputStruct{
-				Value:         []string{},
+				Value:         false,
 				IsValid:       false,
 				MissingFields: []string{"value"},
 			},
 		},
 		{
-			name: "CaseStringList",
+			name: "CaseInt",
 			input: inputStruct{
-				Origin:       map[string]interface{}{"value": []string{"1", "2"}},
+				Origin:       map[string]interface{}{"value": 1},
 				Key:          "value",
-				DefaultValue: []string{},
+				DefaultValue: false,
 			},
 			output: outputStruct{
-				Value:         []string{"1", "2"},
+				Value:         true,
 				IsValid:       true,
-				MissingFields: []string{""},
+				MissingFields: []string{},
+			},
+		},
+		{
+			name: "CaseFloat64",
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": float64(1)},
+				Key:          "value",
+				DefaultValue: false,
+			},
+			output: outputStruct{
+				Value:         true,
+				IsValid:       true,
+				MissingFields: []string{},
+			},
+		},
+		{
+			name: "CaseBool",
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": true},
+				Key:          "value",
+				DefaultValue: false,
+			},
+			output: outputStruct{
+				Value:         true,
+				IsValid:       true,
+				MissingFields: []string{},
 			},
 		},
 		{
 			name: "UnsupportedType",
 			input: inputStruct{
-				Origin:       map[string]interface{}{"value": true},
+				Origin:       map[string]interface{}{"value": []string{"1"}},
 				Key:          "value",
-				DefaultValue: []string{},
+				DefaultValue: false,
 			},
 			output: outputStruct{
-				Value:         []string{},
+				Value:         false,
 				IsValid:       false,
 				MissingFields: []string{"value"},
 			},
@@ -103,10 +117,10 @@ func TestArrayString(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var missingFieldsGot []string
-			gotValue, gotValid := ArrayString(tt.input.Origin, tt.input.Key, &missingFieldsGot, tt.input.DefaultValue)
+			gotValue, gotValid := Bool(tt.input.Origin, tt.input.Key, &missingFieldsGot, tt.input.DefaultValue)
 			if fmt.Sprint(gotValue) != fmt.Sprint(tt.output.Value) {
 				t.Errorf(
-					"expected value on ArrayString(%v,%v,%v,%v) = %v; got %v",
+					"expected value on Bool(%v,%v,%v,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					missingFieldsGot,
@@ -117,7 +131,7 @@ func TestArrayString(t *testing.T) {
 			}
 			if fmt.Sprint(gotValid) != fmt.Sprint(tt.output.IsValid) {
 				t.Errorf(
-					"expected isValid on ArrayString(%v,%v,%v,%v) = %v; got %v",
+					"expected isValid on Bool(%v,%v,%v,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					missingFieldsGot,
@@ -129,7 +143,7 @@ func TestArrayString(t *testing.T) {
 
 			if fmt.Sprint(missingFieldsGot) != fmt.Sprint(tt.output.MissingFields) {
 				t.Errorf(
-					"expected missingFields on ArrayString(%v,%v,%v,%v) = %v; got %v",
+					"expected missingFields on Bool(%v,%v,%v,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
 					missingFieldsGot,
@@ -140,5 +154,4 @@ func TestArrayString(t *testing.T) {
 			}
 		})
 	}
-
 }

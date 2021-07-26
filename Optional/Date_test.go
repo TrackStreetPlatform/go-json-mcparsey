@@ -1,77 +1,79 @@
 package Optional
 
 import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"testing"
 	"time"
 )
 
 func TestDate(t *testing.T) {
+	type inputStruct struct {
+		Origin       map[string]interface{}
+		Key          string
+		DefaultValue time.Time
+	}
 	strTime := "1997-03-01T18:45:26Z"
 	testTime, _ := time.Parse("2006-01-02T15:04:05Z", strTime)
+	testDateTime := primitive.NewDateTimeFromTime(testTime)
 	tests := []struct {
-		name  string
-		input struct {
-			Origin       map[string]interface{}
-			Key          string
-			DefaultValue time.Time
-		}
+		name   string
+		input  inputStruct
 		output time.Time
 	}{
 		{
 			name: "NonExistingKey",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue time.Time
-			}{
-				Origin: map[string]interface{}{
-					"value": testTime,
-				}, Key: "NonExisting", DefaultValue: time.Time{}},
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": testTime},
+				Key:          "NonExisting",
+				DefaultValue: time.Time{},
+			},
 			output: time.Time{},
 		},
 		{
 			name: "CaseString",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue time.Time
-			}{
-				Origin: map[string]interface{}{
-					"value": strTime,
-				}, Key: "value", DefaultValue: time.Time{}},
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": strTime},
+				Key:          "value",
+				DefaultValue: time.Time{},
+			},
 			output: testTime,
 		},
 		{
 			name: "CaseStringLayoutError",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue time.Time
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": "2014-11-12T11:45:260Z",
-				}, Key: "value", DefaultValue: time.Time{}},
+				},
+				Key:          "value",
+				DefaultValue: time.Time{},
+			},
 			output: time.Time{},
 		},
 		{
 			name: "CaseTime",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue time.Time
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": testTime,
-				}, Key: "value", DefaultValue: time.Time{}},
+				},
+				Key:          "value",
+				DefaultValue: time.Time{},
+			},
 			output: testTime,
 		},
 		{
+			name: "CaseDateTime",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"value": testDateTime,
+				},
+				Key:          "value",
+				DefaultValue: time.Time{},
+			},
+			output: testDateTime.Time(),
+		},
+		{
 			name: "UnsupportedType",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue time.Time
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": 42,
 				}, Key: "value", DefaultValue: time.Time{}},

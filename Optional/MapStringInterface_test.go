@@ -6,22 +6,19 @@ import (
 )
 
 func TestMapStringInterface(t *testing.T) {
+	type inputStruct struct {
+		Origin       map[string]interface{}
+		Key          string
+		DefaultValue map[string]interface{}
+	}
 	tests := []struct {
-		name  string
-		input struct {
-			Origin       map[string]interface{}
-			Key          string
-			DefaultValue map[string]interface{}
-		}
+		name   string
+		input  inputStruct
 		output map[string]interface{}
 	}{
 		{
 			name: "NonExistingKey",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue map[string]interface{}
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": map[string]interface{}{"attribute": 42},
 				}, Key: "NonExisting", DefaultValue: map[string]interface{}{}},
@@ -29,11 +26,7 @@ func TestMapStringInterface(t *testing.T) {
 		},
 		{
 			name: "CaseMapStringInterface",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue map[string]interface{}
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": map[string]interface{}{"attribute": 42},
 				}, Key: "value", DefaultValue: map[string]interface{}{}},
@@ -41,11 +34,7 @@ func TestMapStringInterface(t *testing.T) {
 		},
 		{
 			name: "UnsupportedType",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue map[string]interface{}
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": 42,
 				}, Key: "value", DefaultValue: map[string]interface{}{}},

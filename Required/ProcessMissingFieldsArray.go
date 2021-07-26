@@ -6,9 +6,9 @@ import (
 	"strings"
 )
 
-func ProcessMissingFieldsArray(missingRequiredFields []string, strType string) error {
-	if len(missingRequiredFields) > 0 {
-		fields := strings.Join(missingRequiredFields, ", ")
+func ProcessMissingFieldsArray(missingFields []string, strType string) error {
+	if len(missingFields) > 0 {
+		fields := strings.Join(missingFields, ", ")
 		errorMsg := fmt.Sprintf("%s %s %s %s", "required fields in json not avaiable in the correct type for ", strType, ": ", fields)
 		return errors.New(errorMsg)
 	}

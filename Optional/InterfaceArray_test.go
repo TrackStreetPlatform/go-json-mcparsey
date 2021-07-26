@@ -6,20 +6,18 @@ import (
 )
 
 func TestInterfaceArray(t *testing.T) {
+	type inputStruct struct {
+		Origin map[string]interface{}
+		Key    string
+	}
 	tests := []struct {
-		name  string
-		input struct {
-			Origin map[string]interface{}
-			Key    string
-		}
+		name   string
+		input  inputStruct
 		output []map[string]interface{}
 	}{
 		{
 			name: "NonExistingKey",
-			input: struct {
-				Origin map[string]interface{}
-				Key    string
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []interface{}{map[string]interface{}{"test": 42}},
 				}, Key: "NonExisting"},
@@ -27,10 +25,7 @@ func TestInterfaceArray(t *testing.T) {
 		},
 		{
 			name: "CommonCase",
-			input: struct {
-				Origin map[string]interface{}
-				Key    string
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []interface{}{map[string]interface{}{"test": 42}},
 				}, Key: "value"},
@@ -38,10 +33,7 @@ func TestInterfaceArray(t *testing.T) {
 		},
 		{
 			name: "CommonCaseMultipleEntries",
-			input: struct {
-				Origin map[string]interface{}
-				Key    string
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []interface{}{
 						map[string]interface{}{"test1": 42},
@@ -51,10 +43,7 @@ func TestInterfaceArray(t *testing.T) {
 		},
 		{
 			name: "UnsupportedType",
-			input: struct {
-				Origin map[string]interface{}
-				Key    string
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []string{},
 				}, Key: "value"},

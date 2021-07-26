@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func Date(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue time.Time) (value time.Time, isValid bool) {
+func Date(origin map[string]interface{}, key string, missingFields *[]string, defaultValue time.Time) (value time.Time, isValid bool) {
 	var err error
 	if maybeForce, ok := origin[key]; ok {
 		switch tempForce := maybeForce.(type) {
@@ -21,17 +21,19 @@ func Date(origin map[string]interface{}, key string, requiredFields *[]string, d
 				}
 			}
 			if err != nil {
-				AppendWhenNotNil(requiredFields, key)
+				AppendNotNil(missingFields, key)
 				return defaultValue, false
 			}
+		case time.Time:
+			return tempForce, true
 		case primitive.DateTime:
 			return tempForce.Time(), true
 		default:
-			AppendWhenNotNil(requiredFields, key)
+			AppendNotNil(missingFields, key)
 			break
 		}
 	} else {
-		AppendWhenNotNil(requiredFields, key)
+		AppendNotNil(missingFields, key)
 	}
 	return defaultValue, false
 }

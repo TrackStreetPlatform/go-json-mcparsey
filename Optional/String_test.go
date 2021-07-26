@@ -3,22 +3,19 @@ package Optional
 import "testing"
 
 func TestString(t *testing.T) {
+	type inputStruct struct {
+		Origin       map[string]interface{}
+		Key          string
+		DefaultValue string
+	}
 	tests := []struct {
-		name  string
-		input struct {
-			Origin       map[string]interface{}
-			Key          string
-			DefaultValue string
-		}
+		name   string
+		input  inputStruct
 		output string
 	}{
 		{
 			name: "NonExistingKey",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue string
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": "42",
 				}, Key: "NonExisting", DefaultValue: ""},
@@ -26,11 +23,7 @@ func TestString(t *testing.T) {
 		},
 		{
 			name: "CaseString",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue string
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": "42",
 				}, Key: "value", DefaultValue: ""},
@@ -38,11 +31,7 @@ func TestString(t *testing.T) {
 		},
 		{
 			name: "UnsupportedType",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue string
-			}{
+			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []string{},
 				}, Key: "value", DefaultValue: ""},
