@@ -12,12 +12,10 @@ func StringToMapInterface(messageBody []byte, typeStr string) (map[string]interf
 	if err != nil {
 		return nil, err
 	}
-	var maybeTask map[string]interface{}
 	switch tempResponse := temp.(type) {
 	case map[string]interface{}:
-		maybeTask = tempResponse
-		return maybeTask, nil
+		return tempResponse, nil
 	default:
-		return nil, errors.New(fmt.Sprint("Bson not in format expected(", typeStr, ")"))
+		return nil, errors.New(fmt.Sprint("Bson not in format expected(", typeStr, "), got format ", tempResponse, ""))
 	}
 }

@@ -9,7 +9,7 @@ func Bool(origin map[string]interface{}, key string, missingFields *[]string, de
 			boolValue, err := strconv.ParseBool(tempForce)
 			if err != nil {
 				AppendNotNil(missingFields, key)
-				return false, defaultValue
+				return defaultValue, false
 			}
 			return boolValue, true
 		case int:

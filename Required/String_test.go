@@ -25,13 +25,13 @@ func TestString(t *testing.T) {
 			name: "NonExistingKey",
 			input: inputStruct{
 				Origin:       map[string]interface{}{"value": "1"},
-				Key:          "NonExistingKey",
+				Key:          "NonExisting",
 				DefaultValue: "",
 			},
 			output: outputStruct{
 				Value:         "",
 				IsValid:       false,
-				MissingFields: []string{"NonExistingKey"},
+				MissingFields: []string{"NonExisting"},
 			},
 		},
 		{

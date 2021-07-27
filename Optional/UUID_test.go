@@ -26,23 +26,31 @@ func TestUUID(t *testing.T) {
 			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": testUUID,
-				}, Key: "NonExisting", DefaultValue: uuid.UUID{}},
+				},
+				Key:          "NonExisting",
+				DefaultValue: uuid.UUID{}},
 			output: uuid.UUID{},
 		},
 		{
-			name: "StringCase",
+			name: "CaseString",
 			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": "11111111-1111-1111-1111-111111111111",
-				}, Key: "value", DefaultValue: uuid.UUID{}},
+				},
+				Key:          "value",
+				DefaultValue: uuid.UUID{},
+			},
 			output: testUUID,
 		},
 		{
-			name: "StringCaseError",
+			name: "CaseStringErr",
 			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": "not a valid UUID",
-				}, Key: "value", DefaultValue: uuid.UUID{}},
+				},
+				Key:          "value",
+				DefaultValue: uuid.UUID{},
+			},
 			output: uuid.UUID{},
 		},
 		{
@@ -50,7 +58,10 @@ func TestUUID(t *testing.T) {
 			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": primitive.Binary{Data: []byte{17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17}},
-				}, Key: "value", DefaultValue: uuid.UUID{}},
+				},
+				Key:          "value",
+				DefaultValue: uuid.UUID{},
+			},
 			output: testUUID,
 		},
 		{
@@ -58,23 +69,32 @@ func TestUUID(t *testing.T) {
 			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": primitive.Binary{Data: []byte{1, 1, 1, 1}},
-				}, Key: "value", DefaultValue: uuid.UUID{}},
+				},
+				Key:          "value",
+				DefaultValue: uuid.UUID{},
+			},
 			output: uuid.UUID{},
 		},
 		{
-			name: "ByteArrayCase",
+			name: "CaseByteArray",
 			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []byte{17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17},
-				}, Key: "value", DefaultValue: uuid.UUID{}},
+				},
+				Key:          "value",
+				DefaultValue: uuid.UUID{},
+			},
 			output: testUUID,
 		},
 		{
-			name: "ByteArrayCaseError",
+			name: "CaseByteArrayError",
 			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []byte{1, 1, 1, 1},
-				}, Key: "value", DefaultValue: uuid.UUID{}},
+				},
+				Key:          "value",
+				DefaultValue: uuid.UUID{},
+			},
 			output: uuid.UUID{},
 		},
 		{

@@ -20,25 +20,31 @@ func TestInterfaceArray(t *testing.T) {
 			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []interface{}{map[string]interface{}{"test": 42}},
-				}, Key: "NonExisting"},
+				},
+				Key: "NonExisting",
+			},
 			output: []map[string]interface{}{},
 		},
 		{
-			name: "CommonCase",
+			name: "ListInterface",
 			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []interface{}{map[string]interface{}{"test": 42}},
-				}, Key: "value"},
+				},
+				Key: "value",
+			},
 			output: []map[string]interface{}{{"test": 42}},
 		},
 		{
-			name: "CommonCaseMultipleEntries",
+			name: "ListInterfaceMultipleEntries",
 			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []interface{}{
 						map[string]interface{}{"test1": 42},
 						map[string]interface{}{"test2": "42"}},
-				}, Key: "value"},
+				},
+				Key: "value",
+			},
 			output: []map[string]interface{}{{"test1": 42}, {"test2": "42"}},
 		},
 		{
@@ -46,7 +52,9 @@ func TestInterfaceArray(t *testing.T) {
 			input: inputStruct{
 				Origin: map[string]interface{}{
 					"value": []string{},
-				}, Key: "value"},
+				},
+				Key: "value",
+			},
 			output: []map[string]interface{}{},
 		},
 	}

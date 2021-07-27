@@ -28,9 +28,9 @@ func TestMapStringInterface(t *testing.T) {
 			name: "CaseMapStringInterface",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"value": map[string]interface{}{"attribute": 42},
+					"value": map[string]interface{}{"test": 42},
 				}, Key: "value", DefaultValue: map[string]interface{}{}},
-			output: map[string]interface{}{"attribute": 42},
+			output: map[string]interface{}{"test": 42},
 		},
 		{
 			name: "UnsupportedType",
