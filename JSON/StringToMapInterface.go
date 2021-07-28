@@ -12,11 +12,9 @@ func StringToMapInterface(messageBody string, typeStr string) (map[string]interf
 	if err != nil {
 		return nil, err
 	}
-	var maybeTask map[string]interface{}
 	switch tempResponse := temp.(type) {
 	case map[string]interface{}:
-		maybeTask = tempResponse
-		return maybeTask, nil
+		return tempResponse, nil
 	default:
 		return nil, errors.New(fmt.Sprint("Json not in format expected(", typeStr, ")"))
 	}

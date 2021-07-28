@@ -6,87 +6,71 @@ import (
 )
 
 func TestArrayString(t *testing.T) {
+	type inputStruct struct {
+		Origin       map[string]interface{}
+		Key          string
+		DefaultValue []string
+	}
 	tests := []struct {
-		name  string
-		input struct {
-			Origin       map[string]interface{}
-			Key          string
-			DefaultValue []string
-		}
+		name   string
+		input  inputStruct
 		output []string
 	}{
-
 		{
 			name: "NonExistentKeys",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue []string
-			}{
-				Origin: map[string]interface{}{
-					"value": "1",
-				}, Key: "NonExisting", DefaultValue: []string{}},
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": "1"},
+				Key:          "NonExisting",
+				DefaultValue: []string{},
+			},
 			output: []string{},
 		},
 		{
 			name: "CaseString",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue []string
-			}{
-				Origin: map[string]interface{}{
-					"value": "1,2",
-				}, Key: "value", DefaultValue: []string{}},
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": "1,2"},
+				Key:          "value",
+				DefaultValue: []string{}},
 			output: []string{"1", "2"},
 		},
 		{
+			name: "CaseInterfaceArray",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"value": []interface{}{"test", "42"}},
+				Key:          "value",
+				DefaultValue: []string{},
+			},
+			output: []string{"test", "42"},
+		},
+		{
+			name: "CaseInterfaceArrayError",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"value": []interface{}{"test", 42}},
+				Key:          "value",
+				DefaultValue: []string{},
+			},
+			output: []string{},
+		},
+		{
+			name: "CaseStringArray",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"value": []string{"test", "42"},
+				},
+				Key:          "value",
+				DefaultValue: []string{},
+			},
+			output: []string{"test", "42"},
+		},
+		{
 			name: "UnsupportedType",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue []string
-			}{
-				Origin: map[string]interface{}{
-					"value": 42,
-				}, Key: "value", DefaultValue: []string{}},
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": 42},
+				Key:          "value",
+				DefaultValue: []string{}},
 			output: []string{},
-		},
-		{
-			name: "InterfaceArrayProper",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue []string
-			}{
-				Origin: map[string]interface{}{
-					"value": []interface{}{"disused", "sdfsd"},
-				}, Key: "value", DefaultValue: []string{}},
-			output: []string{"disused", "sdfsd"},
-		},
-		{
-			name: "InterfaceArrayProperOneItemWrongType",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue []string
-			}{
-				Origin: map[string]interface{}{
-					"value": []interface{}{"disused", "sdfsd", 42},
-				}, Key: "value", DefaultValue: []string{}},
-			output: []string{},
-		},
-		{
-			name: "StringArrayProper",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue []string
-			}{
-				Origin: map[string]interface{}{
-					"value": []string{"disused", "sdfsd"},
-				}, Key: "value", DefaultValue: []string{}},
-			output: []string{"disused", "sdfsd"},
 		},
 	}
 

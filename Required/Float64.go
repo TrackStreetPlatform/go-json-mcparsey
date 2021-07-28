@@ -2,25 +2,25 @@ package Required
 
 import "strconv"
 
-func Float64(origin map[string]interface{}, key string, requiredFields *[]string, defaultValue float64) (value float64, isValid bool) {
-	if maybePrice, ok := origin[key]; ok {
-		switch tempPrice := maybePrice.(type) {
+func Float64(origin map[string]interface{}, key string, missingFields *[]string, defaultValue float64) (value float64, isValid bool) {
+	if maybeValue, ok := origin[key]; ok {
+		switch tempValue := maybeValue.(type) {
 		case string:
-			Price, err := strconv.ParseFloat(tempPrice, 64)
+			value, err := strconv.ParseFloat(tempValue, 64)
 			if err != nil {
-				AppendWhenNotNil(requiredFields, key)
+				AppendNotNil(missingFields, key)
 				return defaultValue, false
 			}
-			return Price, true
+			return value, true
 		case int:
-			return float64(tempPrice), true
+			return float64(tempValue), true
 		case float64:
-			return tempPrice, true
+			return tempValue, true
 		default:
-			AppendWhenNotNil(requiredFields, key)
+			AppendNotNil(missingFields, key)
 		}
 	} else {
-		AppendWhenNotNil(requiredFields, key)
+		AppendNotNil(missingFields, key)
 	}
 	return defaultValue, false
 }

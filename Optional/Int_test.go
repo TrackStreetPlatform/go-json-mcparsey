@@ -5,109 +5,86 @@ import (
 )
 
 func TestInt(t *testing.T) {
+	type inputStruct struct {
+		Origin       map[string]interface{}
+		Key          string
+		DefaultValue int
+	}
 	tests := []struct {
-		name  string
-		input struct {
-			Origin       map[string]interface{}
-			Key          string
-			DefaultValue int
-		}
+		name   string
+		input  inputStruct
 		output int
 	}{
 		{
 			name: "NonExistingKey",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue int
-			}{
-				Origin: map[string]interface{}{
-					"value": 42,
-				}, Key: "NonExisting", DefaultValue: 0},
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": 42},
+				Key:          "NonExisting",
+				DefaultValue: 0,
+			},
 			output: 0,
 		},
 		{
 			name: "CaseString",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue int
-			}{
-				Origin: map[string]interface{}{
-					"value": "42",
-				}, Key: "value", DefaultValue: 0},
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": "42"},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 42,
 		},
 		{
 			name: "CaseStringError",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue int
-			}{
-				Origin: map[string]interface{}{
-					"value": "forty two",
-				}, Key: "value", DefaultValue: 0},
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": "forty two"},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 0,
 		},
 		{
 			name: "CaseInt",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue int
-			}{
-				Origin: map[string]interface{}{
-					"value": 42,
-				}, Key: "value", DefaultValue: 0},
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": 42},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 42,
 		},
 		{
 			name: "CaseInt32",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue int
-			}{
-				Origin: map[string]interface{}{
-					"value": int32(42),
-				}, Key: "value", DefaultValue: 0},
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": int32(42)},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 42,
 		},
 		{
 			name: "CaseInt64",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue int
-			}{
-				Origin: map[string]interface{}{
-					"value": int64(42),
-				}, Key: "value", DefaultValue: 0},
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": int64(42)},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 42,
 		},
 		{
 			name: "CaseFloat64",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue int
-			}{
-				Origin: map[string]interface{}{
-					"value": 42.,
-				}, Key: "value", DefaultValue: 0},
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": 42.},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 42,
 		},
 		{
 			name: "UnsupportedType",
-			input: struct {
-				Origin       map[string]interface{}
-				Key          string
-				DefaultValue int
-			}{
-				Origin: map[string]interface{}{
-					"value": []string{},
-				}, Key: "value", DefaultValue: 0},
+			input: inputStruct{
+				Origin:       map[string]interface{}{"value": []string{}},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 0,
 		},
 	}

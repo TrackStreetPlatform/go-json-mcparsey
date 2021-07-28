@@ -5,14 +5,14 @@ import (
 	"testing"
 )
 
-func TestString(t *testing.T) {
+func TestMapStringInterface(t *testing.T) {
 	type inputStruct struct {
 		Origin       map[string]interface{}
 		Key          string
-		DefaultValue string
+		DefaultValue map[string]interface{}
 	}
 	type outputStruct struct {
-		Value         string
+		Value         map[string]interface{}
 		IsValid       bool
 		MissingFields []string
 	}
@@ -22,27 +22,29 @@ func TestString(t *testing.T) {
 		output outputStruct
 	}{
 		{
-			name: "NonExistingKey",
+			name: "NonExistentKeys",
 			input: inputStruct{
-				Origin:       map[string]interface{}{"value": "1"},
+				Origin:       map[string]interface{}{"value": 42},
 				Key:          "NonExisting",
-				DefaultValue: "",
+				DefaultValue: map[string]interface{}{},
 			},
 			output: outputStruct{
-				Value:         "",
+				Value:         map[string]interface{}{},
 				IsValid:       false,
 				MissingFields: []string{"NonExisting"},
 			},
 		},
 		{
-			name: "CaseString",
+			name: "CaseMapStringInterface",
 			input: inputStruct{
-				Origin:       map[string]interface{}{"value": "1"},
+				Origin: map[string]interface{}{
+					"value": map[string]interface{}{"test": 42},
+				},
 				Key:          "value",
-				DefaultValue: "",
+				DefaultValue: map[string]interface{}{},
 			},
 			output: outputStruct{
-				Value:         "1",
+				Value:         map[string]interface{}{"test": 42},
 				IsValid:       true,
 				MissingFields: []string{},
 			},
@@ -50,12 +52,12 @@ func TestString(t *testing.T) {
 		{
 			name: "UnsupportedType",
 			input: inputStruct{
-				Origin:       map[string]interface{}{"value": 1},
+				Origin:       map[string]interface{}{"value": []string{"1"}},
 				Key:          "value",
-				DefaultValue: "",
+				DefaultValue: map[string]interface{}{},
 			},
 			output: outputStruct{
-				Value:         "",
+				Value:         map[string]interface{}{},
 				IsValid:       false,
 				MissingFields: []string{"value"},
 			},
@@ -65,39 +67,40 @@ func TestString(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var missingFieldsGot []string
-			valueGot, isValidGot := String(tt.input.Origin, tt.input.Key, &missingFieldsGot, tt.input.DefaultValue)
-			if fmt.Sprint(valueGot) != fmt.Sprint(tt.output.Value) {
+			gotValue, gotValid := MapStringInterface(tt.input.Origin, tt.input.Key, &missingFieldsGot, tt.input.DefaultValue)
+			if fmt.Sprint(gotValue) != fmt.Sprint(tt.output.Value) {
 				t.Errorf(
-					"expected value on String(%v,%v,missingFields,%v) = %v; got %v",
+					"expected value on MapStringInterface(%v,%v,%v,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
+					missingFieldsGot,
 					tt.input.DefaultValue,
 					tt.output.Value,
-					valueGot,
+					gotValue,
 				)
 			}
-			if fmt.Sprint(isValidGot) != fmt.Sprint(tt.output.IsValid) {
+			if fmt.Sprint(gotValid) != fmt.Sprint(tt.output.IsValid) {
 				t.Errorf(
-					"expected isValid on String(%v,%v,missingFields,%v) = %v; got %v",
+					"expected isValid on MapStringInterface(%v,%v,%v,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
+					missingFieldsGot,
 					tt.input.DefaultValue,
 					tt.output.IsValid,
-					isValidGot,
+					gotValid,
 				)
 			}
-
 			if fmt.Sprint(missingFieldsGot) != fmt.Sprint(tt.output.MissingFields) {
 				t.Errorf(
-					"expected missingFields on String(%v,%v,missingFields,%v) = %v; got %v",
+					"expected missingFields on MapStringInterface(%v,%v,%v,%v) = %v; got %v",
 					tt.input.Origin,
 					tt.input.Key,
+					missingFieldsGot,
 					tt.input.DefaultValue,
 					tt.output.MissingFields,
 					missingFieldsGot,
 				)
 			}
-
 		})
 	}
 }

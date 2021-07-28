@@ -1,6 +1,7 @@
 package Optional
 
 import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 )
 
@@ -26,6 +27,8 @@ func Date(origin map[string]interface{}, key string, defaultValue time.Time) tim
 			return value
 		case time.Time:
 			return tempForce
+		case primitive.DateTime:
+			return tempForce.Time()
 		default:
 			break
 		}
