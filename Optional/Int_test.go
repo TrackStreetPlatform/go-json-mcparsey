@@ -18,65 +18,73 @@ func TestInt(t *testing.T) {
 		{
 			name: "NonExistingKey",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": 42,
-				}, Key: "NonExisting", DefaultValue: 0},
+				Origin:       map[string]interface{}{"value": 42},
+				Key:          "NonExisting",
+				DefaultValue: 0,
+			},
 			output: 0,
 		},
 		{
 			name: "CaseString",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": "42",
-				}, Key: "value", DefaultValue: 0},
+				Origin:       map[string]interface{}{"value": "42"},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 42,
 		},
 		{
 			name: "CaseStringError",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": "forty two",
-				}, Key: "value", DefaultValue: 0},
+				Origin:       map[string]interface{}{"value": "forty two"},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 0,
 		},
 		{
 			name: "CaseInt",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": 42,
-				}, Key: "value", DefaultValue: 0},
+				Origin:       map[string]interface{}{"value": 42},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 42,
 		},
 		{
 			name: "CaseInt32",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": int32(42),
-				}, Key: "value", DefaultValue: 0},
+				Origin:       map[string]interface{}{"value": int32(42)},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 42,
 		},
 		{
 			name: "CaseInt64",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": int64(42),
-				}, Key: "value", DefaultValue: 0},
+				Origin:       map[string]interface{}{"value": int64(42)},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 42,
 		},
 		{
 			name: "CaseFloat64",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": 42.,
-				}, Key: "value", DefaultValue: 0},
+				Origin:       map[string]interface{}{"value": 42.},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 42,
 		},
 		{
 			name: "UnsupportedType",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": []string{},
-				}, Key: "value", DefaultValue: 0},
+				Origin:       map[string]interface{}{"value": []string{}},
+				Key:          "value",
+				DefaultValue: 0,
+			},
 			output: 0,
 		},
 	}

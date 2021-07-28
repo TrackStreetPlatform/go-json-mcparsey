@@ -116,11 +116,9 @@ func TestUUID(t *testing.T) {
 			},
 		},
 		{
-			name: "CaseByteArray",
+			name: "CaseByteArrayError",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": []byte{1, 1, 1, 1},
-				},
+				Origin:       map[string]interface{}{"value": []byte{1, 1, 1, 1}},
 				Key:          "value",
 				DefaultValue: uuid.UUID{},
 			},
@@ -133,9 +131,7 @@ func TestUUID(t *testing.T) {
 		{
 			name: "CaseUUID",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": testUUID,
-				},
+				Origin:       map[string]interface{}{"value": testUUID},
 				Key:          "value",
 				DefaultValue: uuid.UUID{},
 			},
@@ -148,9 +144,7 @@ func TestUUID(t *testing.T) {
 		{
 			name: "CaseUUIDMongo",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": uuid2.UUID{},
-				},
+				Origin:       map[string]interface{}{"value": uuid2.UUID{}},
 				Key:          "value",
 				DefaultValue: testUUID,
 			},

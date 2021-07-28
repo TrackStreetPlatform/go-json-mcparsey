@@ -40,7 +40,8 @@ func TestMapStringInterface(t *testing.T) {
 				Origin: map[string]interface{}{
 					"value": map[string]interface{}{"test": 42},
 				},
-				Key: "value",
+				Key:          "value",
+				DefaultValue: map[string]interface{}{},
 			},
 			output: outputStruct{
 				Value:         map[string]interface{}{"test": 42},

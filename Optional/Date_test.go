@@ -41,9 +41,7 @@ func TestDate(t *testing.T) {
 		{
 			name: "CaseStringLayoutError",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": "2014-11-12T11:45:260Z",
-				},
+				Origin:       map[string]interface{}{"value": "2014-11-12T11:45:260Z"},
 				Key:          "value",
 				DefaultValue: time.Time{},
 			},
@@ -52,9 +50,7 @@ func TestDate(t *testing.T) {
 		{
 			name: "CaseTime",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": testTime,
-				},
+				Origin:       map[string]interface{}{"value": testTime},
 				Key:          "value",
 				DefaultValue: time.Time{},
 			},
@@ -63,9 +59,7 @@ func TestDate(t *testing.T) {
 		{
 			name: "CaseDateTime",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": testDateTime,
-				},
+				Origin:       map[string]interface{}{"value": testDateTime},
 				Key:          "value",
 				DefaultValue: time.Time{},
 			},
@@ -74,9 +68,9 @@ func TestDate(t *testing.T) {
 		{
 			name: "UnsupportedType",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": 42,
-				}, Key: "value", DefaultValue: time.Time{}},
+				Origin:       map[string]interface{}{"value": 42},
+				Key:          "value",
+				DefaultValue: time.Time{}},
 			output: time.Time{},
 		},
 	}

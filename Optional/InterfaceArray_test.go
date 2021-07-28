@@ -1,7 +1,7 @@
 package Optional
 
 import (
-	"reflect"
+	"fmt"
 	"testing"
 )
 
@@ -62,7 +62,7 @@ func TestInterfaceArray(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := InterfaceArray(tt.input.Origin, tt.input.Key)
-			if !reflect.DeepEqual(got, tt.output) {
+			if fmt.Sprint(got) != fmt.Sprint(tt.output) {
 				t.Errorf(
 					"expected InterfaceArray(%v,%v) = %v got %v",
 					tt.input.Origin,

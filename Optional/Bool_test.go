@@ -16,57 +16,64 @@ func TestBool(t *testing.T) {
 		{
 			name: "NonExistingKey",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": true,
-				}, Key: "NonExisting", DefaultValue: false},
+				Origin:       map[string]interface{}{"value": true},
+				Key:          "NonExisting",
+				DefaultValue: false,
+			},
 			output: false,
 		},
 		{
 			name: "CaseStringTrue",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": "true",
-				}, Key: "value", DefaultValue: false},
+				Origin:       map[string]interface{}{"value": "true"},
+				Key:          "value",
+				DefaultValue: false,
+			},
 			output: true,
 		},
 		{
 			name: "CaseString1",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": "1",
-				}, Key: "value", DefaultValue: false},
+				Origin:       map[string]interface{}{"value": "1"},
+				Key:          "value",
+				DefaultValue: false,
+			},
 			output: true,
 		},
 		{
 			name: "CaseInteger",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": 1,
-				}, Key: "value", DefaultValue: false},
+				Origin:       map[string]interface{}{"value": 1},
+				Key:          "value",
+				DefaultValue: false,
+			},
 			output: true,
 		},
 		{
 			name: "CaseFloat",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": 1.0,
-				}, Key: "value", DefaultValue: false},
+				Origin:       map[string]interface{}{"value": 1.0},
+				Key:          "value",
+				DefaultValue: false,
+			},
 			output: true,
 		},
 		{
 			name: "CaseBool",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": true,
-				}, Key: "value", DefaultValue: false},
+				Origin:       map[string]interface{}{"value": true},
+				Key:          "value",
+				DefaultValue: false,
+			},
 			output: true,
 		},
 		{
 			name: "UnsupportedType",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": []string{},
-				}, Key: "value", DefaultValue: false},
+				Origin:       map[string]interface{}{"value": []string{}},
+				Key:          "value",
+				DefaultValue: false,
+			},
 			output: false,
 		},
 	}

@@ -6,7 +6,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	uuid2 "go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 	"testing"
-	//"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestUUID(t *testing.T) {
@@ -24,9 +23,7 @@ func TestUUID(t *testing.T) {
 		{
 			name: "NonExistingKey",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": testUUID,
-				},
+				Origin:       map[string]interface{}{"value": testUUID},
 				Key:          "NonExisting",
 				DefaultValue: uuid.UUID{}},
 			output: uuid.UUID{},
@@ -34,9 +31,7 @@ func TestUUID(t *testing.T) {
 		{
 			name: "CaseString",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": "11111111-1111-1111-1111-111111111111",
-				},
+				Origin:       map[string]interface{}{"value": "11111111-1111-1111-1111-111111111111"},
 				Key:          "value",
 				DefaultValue: uuid.UUID{},
 			},
@@ -45,9 +40,7 @@ func TestUUID(t *testing.T) {
 		{
 			name: "CaseStringErr",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": "not a valid UUID",
-				},
+				Origin:       map[string]interface{}{"value": "not a valid UUID"},
 				Key:          "value",
 				DefaultValue: uuid.UUID{},
 			},
@@ -57,7 +50,9 @@ func TestUUID(t *testing.T) {
 			name: "BinaryCase",
 			input: inputStruct{
 				Origin: map[string]interface{}{
-					"value": primitive.Binary{Data: []byte{17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17}},
+					"value": primitive.Binary{
+						Data: []byte{17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17},
+					},
 				},
 				Key:          "value",
 				DefaultValue: uuid.UUID{},
@@ -67,8 +62,9 @@ func TestUUID(t *testing.T) {
 		{
 			name: "BinaryCaseError",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": primitive.Binary{Data: []byte{1, 1, 1, 1}},
+				Origin: map[string]interface{}{"value": primitive.Binary{
+					Data: []byte{1, 1, 1, 1},
+				},
 				},
 				Key:          "value",
 				DefaultValue: uuid.UUID{},
@@ -89,9 +85,7 @@ func TestUUID(t *testing.T) {
 		{
 			name: "CaseByteArrayError",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": []byte{1, 1, 1, 1},
-				},
+				Origin:       map[string]interface{}{"value": []byte{1, 1, 1, 1}},
 				Key:          "value",
 				DefaultValue: uuid.UUID{},
 			},
@@ -100,25 +94,28 @@ func TestUUID(t *testing.T) {
 		{
 			name: "CaseUUID",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": testUUID,
-				}, Key: "value", DefaultValue: uuid.UUID{}},
+				Origin:       map[string]interface{}{"value": testUUID},
+				Key:          "value",
+				DefaultValue: uuid.UUID{},
+			},
 			output: testUUID,
 		},
 		{
 			name: "CaseUUIDMongo",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": uuid2.UUID{},
-				}, Key: "value", DefaultValue: testUUID},
+				Origin:       map[string]interface{}{"value": uuid2.UUID{}},
+				Key:          "value",
+				DefaultValue: testUUID,
+			},
 			output: uuid.UUID{},
 		},
 		{
 			name: "UnsupportedType",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": []string{},
-				}, Key: "value", DefaultValue: uuid.UUID{}},
+				Origin:       map[string]interface{}{"value": []string{}},
+				Key:          "value",
+				DefaultValue: uuid.UUID{},
+			},
 			output: uuid.UUID{},
 		},
 	}

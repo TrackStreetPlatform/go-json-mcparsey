@@ -34,45 +34,43 @@ func TestArrayString(t *testing.T) {
 			output: []string{"1", "2"},
 		},
 		{
+			name: "CaseInterfaceArray",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"value": []interface{}{"test", "42"}},
+				Key:          "value",
+				DefaultValue: []string{},
+			},
+			output: []string{"test", "42"},
+		},
+		{
+			name: "CaseInterfaceArrayError",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"value": []interface{}{"test", 42}},
+				Key:          "value",
+				DefaultValue: []string{},
+			},
+			output: []string{},
+		},
+		{
+			name: "CaseStringArray",
+			input: inputStruct{
+				Origin: map[string]interface{}{
+					"value": []string{"test", "42"},
+				},
+				Key:          "value",
+				DefaultValue: []string{},
+			},
+			output: []string{"test", "42"},
+		},
+		{
 			name: "UnsupportedType",
 			input: inputStruct{
 				Origin:       map[string]interface{}{"value": 42},
 				Key:          "value",
 				DefaultValue: []string{}},
 			output: []string{},
-		},
-		{
-			name: "InterfaceArrayProper",
-			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": []interface{}{"disused", "sdfsd"},
-				},
-				Key:          "value",
-				DefaultValue: []string{},
-			},
-			output: []string{"disused", "sdfsd"},
-		},
-		{
-			name: "InterfaceArrayProperOneItemWrongType",
-			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": []interface{}{"disused", "sdfsd", 42},
-				},
-				Key:          "value",
-				DefaultValue: []string{},
-			},
-			output: []string{},
-		},
-		{
-			name: "StringArrayProper",
-			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": []string{"disused", "sdfsd"},
-				},
-				Key:          "value",
-				DefaultValue: []string{},
-			},
-			output: []string{"disused", "sdfsd"},
 		},
 	}
 

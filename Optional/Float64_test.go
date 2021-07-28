@@ -18,33 +18,37 @@ func TestFloat64(t *testing.T) {
 		{
 			name: "NonExistingKey",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": 42.,
-				}, Key: "NonExisting", DefaultValue: 0.},
+				Origin:       map[string]interface{}{"value": 42.},
+				Key:          "NonExisting",
+				DefaultValue: 0.,
+			},
 			output: 0.,
 		},
 		{
 			name: "CaseInt",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": 42,
-				}, Key: "value", DefaultValue: 0.},
+				Origin:       map[string]interface{}{"value": 42},
+				Key:          "value",
+				DefaultValue: 0.,
+			},
 			output: 42.,
 		},
 		{
 			name: "CaseFloat",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": 42.,
-				}, Key: "value", DefaultValue: 0.},
+				Origin:       map[string]interface{}{"value": 42.},
+				Key:          "value",
+				DefaultValue: 0.,
+			},
 			output: 42.,
 		},
 		{
 			name: "UnsupportedType",
 			input: inputStruct{
-				Origin: map[string]interface{}{
-					"value": []string{},
-				}, Key: "value", DefaultValue: 0.},
+				Origin:       map[string]interface{}{"value": []string{}},
+				Key:          "value",
+				DefaultValue: 0.,
+			},
 			output: 0.,
 		},
 	}

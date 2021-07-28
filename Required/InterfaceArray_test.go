@@ -52,7 +52,8 @@ func TestInterfaceArray(t *testing.T) {
 				Origin: map[string]interface{}{
 					"value": []interface{}{
 						map[string]interface{}{"test1": 42},
-						map[string]interface{}{"test2": "42"}},
+						map[string]interface{}{"test2": "42"},
+					},
 				},
 				Key: "value",
 			},
