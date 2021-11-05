@@ -14,6 +14,8 @@ func Date(origin map[string]interface{}, key string, defaultValue time.Time) tim
 			layouts := []string{
 				"2006-01-02 15:04:05",
 				"2006-01-02T15:04:05Z",
+				"2006-01-02T15:04:05.999Z",
+				"2006-01-02T15:04:05.999999999Z",
 			}
 			for _, layout := range layouts {
 				value, err = time.Parse(layout, tempForce)
