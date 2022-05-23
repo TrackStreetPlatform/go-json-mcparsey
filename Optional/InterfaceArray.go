@@ -1,8 +1,11 @@
 package Optional
 
-func InterfaceArray(origin map[string]interface{}, key string) []map[string]interface{} {
+import "github.com/TrackStreetPlatform/go-json-mcparsey/Path"
+
+func InterfaceArray(origin map[string]interface{}, path string) []map[string]interface{} {
 	items := make([]map[string]interface{}, 0)
-	if maybeValueInField, ok := origin[key]; ok {
+	maybeValueInField, err := Path.Traverse(origin, path)
+	if err == nil {
 		switch tempValueInField := maybeValueInField.(type) {
 		case []interface{}:
 			for _, maybeItem := range tempValueInField {

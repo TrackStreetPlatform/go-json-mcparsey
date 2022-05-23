@@ -1,13 +1,15 @@
 package Optional
 
 import (
+	"github.com/TrackStreetPlatform/go-json-mcparsey/Path"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	uuid2 "go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 )
 
-func UUID(origin map[string]interface{}, key string, defaultValue uuid.UUID) uuid.UUID {
-	if maybeValueInField, ok := origin[key]; ok {
+func UUID(origin map[string]interface{}, path string, defaultValue uuid.UUID) uuid.UUID {
+	maybeValueInField, err := Path.Traverse(origin, path)
+	if err == nil {
 		switch tempValueInField := maybeValueInField.(type) {
 		case string:
 			parse, err := uuid.Parse(tempValueInField)
