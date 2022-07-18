@@ -1,9 +1,13 @@
 package Optional
 
-import "strings"
+import (
+	"github.com/TrackStreetPlatform/go-json-mcparsey/Path"
+	"strings"
+)
 
-func ArrayString(origin map[string]interface{}, key string, defaultValue []string) []string {
-	if maybeValueInField, ok := origin[key]; ok {
+func ArrayString(origin map[string]interface{}, path string, defaultValue []string) []string {
+	maybeValueInField, err := Path.Traverse(origin, path)
+	if err == nil {
 		switch tempValueInField := maybeValueInField.(type) {
 		case string:
 			return strings.Split(tempValueInField, ",")

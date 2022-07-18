@@ -1,15 +1,17 @@
 package Optional
 
 import (
+	"github.com/TrackStreetPlatform/go-json-mcparsey/Path"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 )
 
-func Date(origin map[string]interface{}, key string, defaultValue time.Time) time.Time {
+func Date(origin map[string]interface{}, path string, defaultValue time.Time) time.Time {
 	var err error
 	var value time.Time
-	if maybeForce, ok := origin[key]; ok {
-		switch tempForce := maybeForce.(type) {
+	maybeValueInField, err := Path.Traverse(origin, path)
+	if err == nil {
+		switch tmpVal := maybeValueInField.(type) {
 		case string:
 			layouts := []string{
 				"2006-01-02 15:04:05",
@@ -18,7 +20,7 @@ func Date(origin map[string]interface{}, key string, defaultValue time.Time) tim
 				"2006-01-02T15:04:05.999999999Z",
 			}
 			for _, layout := range layouts {
-				value, err = time.Parse(layout, tempForce)
+				value, err = time.Parse(layout, tmpVal)
 				if err == nil {
 					return value
 				}
@@ -28,9 +30,9 @@ func Date(origin map[string]interface{}, key string, defaultValue time.Time) tim
 			}
 			return value
 		case time.Time:
-			return tempForce
+			return tmpVal
 		case primitive.DateTime:
-			return tempForce.Time()
+			return tmpVal.Time()
 		default:
 			break
 		}

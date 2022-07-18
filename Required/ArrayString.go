@@ -1,9 +1,13 @@
 package Required
 
-import "strings"
+import (
+	"github.com/TrackStreetPlatform/go-json-mcparsey/Path"
+	"strings"
+)
 
-func ArrayString(origin map[string]interface{}, key string, missingFields *[]string, defaultValue []string) (value []string, isValid bool) {
-	if maybeValueInField, ok := origin[key]; ok {
+func ArrayString(origin map[string]interface{}, path string, missingFields *[]string, defaultValue []string) (value []string, isValid bool) {
+	maybeValueInField, err := Path.Traverse(origin, path)
+	if err == nil {
 		switch tempValueInField := maybeValueInField.(type) {
 		case string:
 			return strings.Split(tempValueInField, ","), true
@@ -14,7 +18,7 @@ func ArrayString(origin map[string]interface{}, key string, missingFields *[]str
 				case string:
 					items = append(items, strItem)
 				default:
-					AppendNotNil(missingFields, key)
+					AppendNotNil(missingFields, path)
 					return defaultValue, false
 				}
 			}
@@ -25,6 +29,6 @@ func ArrayString(origin map[string]interface{}, key string, missingFields *[]str
 			break
 		}
 	}
-	AppendNotNil(missingFields, key)
+	AppendNotNil(missingFields, path)
 	return defaultValue, false
 }
