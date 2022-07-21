@@ -37,6 +37,8 @@ func ArrayInt(origin map[string]interface{}, path string, defaultValue []int) []
 			return items
 		case []string:
 			return mapStringToInt(tempValueInField)
+		case []int:
+			return tempValueInField
 		default:
 			break
 		}
