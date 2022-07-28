@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	uuid2 "go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 	"testing"
 )
 
@@ -137,19 +136,6 @@ func TestUUID(t *testing.T) {
 			},
 			output: outputStruct{
 				Value:         testUUID,
-				IsValid:       true,
-				MissingFields: []string{},
-			},
-		},
-		{
-			name: "CaseUUIDMongo",
-			input: inputStruct{
-				Origin:       map[string]interface{}{"value": uuid2.UUID{}},
-				Key:          "value",
-				DefaultValue: testUUID,
-			},
-			output: outputStruct{
-				Value:         uuid.UUID{},
 				IsValid:       true,
 				MissingFields: []string{},
 			},
