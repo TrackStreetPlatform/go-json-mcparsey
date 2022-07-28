@@ -4,7 +4,6 @@ import (
 	"github.com/TrackStreetPlatform/go-json-mcparsey/Path"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	uuid2 "go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 )
 
 func UUID(origin map[string]interface{}, path string, missingFields *[]string, defaultValue uuid.UUID) (value uuid.UUID, isValid bool) {
@@ -34,13 +33,6 @@ func UUID(origin map[string]interface{}, path string, missingFields *[]string, d
 			return parse, true
 		case uuid.UUID:
 			return tempValueInField, true
-		case uuid2.UUID:
-			parse, err := uuid.FromBytes(tempValueInField[:])
-			if err != nil {
-				AppendNotNil(missingFields, path)
-				return defaultValue, false
-			}
-			return parse, true
 		default:
 			break
 		}
