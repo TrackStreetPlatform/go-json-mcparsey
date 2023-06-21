@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	uuid2 "go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 	"testing"
 )
 
@@ -99,15 +98,6 @@ func TestUUID(t *testing.T) {
 				DefaultValue: uuid.UUID{},
 			},
 			output: testUUID,
-		},
-		{
-			name: "CaseUUIDMongo",
-			input: inputStruct{
-				Origin:       map[string]interface{}{"value": uuid2.UUID{}},
-				Key:          "value",
-				DefaultValue: testUUID,
-			},
-			output: uuid.UUID{},
 		},
 		{
 			name: "UnsupportedType",
