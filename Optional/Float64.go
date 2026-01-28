@@ -1,8 +1,10 @@
 package Optional
 
 import (
-	"github.com/TrackStreetPlatform/go-json-mcparsey/Path"
 	"strconv"
+	"strings"
+
+	"github.com/TrackStreetPlatform/go-json-mcparsey/Path"
 )
 
 func Float64(origin map[string]interface{}, path string, defaultValue float64) float64 {
@@ -10,7 +12,7 @@ func Float64(origin map[string]interface{}, path string, defaultValue float64) f
 	if err == nil {
 		switch tempVal := maybeValueInField.(type) {
 		case string:
-			Price, err := strconv.ParseFloat(tempVal, 64)
+			Price, err := strconv.ParseFloat(strings.TrimSpace(tempVal), 64)
 			if err != nil {
 				return defaultValue
 			}
